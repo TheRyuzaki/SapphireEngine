@@ -1,0 +1,7 @@
+C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\bin\Debug\TestApplication.exe
+C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\bin\Debug\TestApplication.pdb
+C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\bin\Debug\SapphireEngine.dll
+C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\bin\Debug\SapphireEngine.pdb
+C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\obj\Debug\TestApplication.csprojResolveAssemblyReference.cache
+C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\obj\Debug\TestApplication.exe
+C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\obj\Debug\TestApplication.pdb
