@@ -27,25 +27,25 @@ namespace SapphireEngine
             }
         }
 
-        public static void Log(string format, params object[] args)
+        public static void Log(string _format, params object[] _args)
         {
-            string line = string.Format($"[{DateTime.Now:HH:mm:ss fff}]: " + format, args);
+            string line = string.Format($"[{DateTime.Now:HH:mm:ss fff}]: " + _format, _args);
             Console.WriteLine(line);
             OnReceivedLog?.Invoke(line);
             File.AppendAllText("./output.log", "\n" + line);
         }
 
-        public static void LogWarning(string format, params object[] args)
+        public static void LogWarning(string _format, params object[] _args)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Log(format, args);
+            Log(_format, _args);
             Console.ResetColor();
         }
 
-        public static void LogError(string format, params object[] args)
+        public static void LogError(string _format, params object[] _args)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Log(format, args);
+            Log(_format, _args);
             Console.ResetColor();
         }
     }

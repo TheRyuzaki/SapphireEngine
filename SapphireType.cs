@@ -223,26 +223,26 @@ namespace SapphireEngine
         #endregion
 
 
-        public void SendMessage(string method, params object[] args)
+        public void SendMessage(string _method, params object[] _args)
         {
-            if (ListMethods[this.m_thistype].ContainsKey(method))
+            if (ListMethods[this.m_thistype].ContainsKey(_method))
             {
                 try
                 {
-                    ListMethods[this.m_thistype][method].Invoke(this, args);
+                    ListMethods[this.m_thistype][_method].Invoke(this, _args);
                 }
                 catch (Exception ex)
                 {
-                    ConsoleSystem.LogError($"Error to {this.GetType().Name}.SendMessage({method}): " + ex.Message);
+                    ConsoleSystem.LogError($"Error to {this.GetType().Name}.SendMessage({_method}): " + ex.Message);
                 }
             }
         }
         
-        public void BroadcastMessage(string method, params object[] args)
+        public void BroadcastMessage(string _method, params object[] _args)
         {
-            this.SendMessage(method, args);
+            this.SendMessage(_method, _args);
             for (var i = 0; i < this.Children.Count; i++)
-                this.Children[i].BroadcastMessage(method, args);
+                this.Children[i].BroadcastMessage(_method, _args);
         }
         
         public virtual void OnAwake()

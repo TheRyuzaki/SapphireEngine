@@ -54,9 +54,7 @@ namespace SapphireEngine
         }
 
         public static void RunToMainThread(CallBackObject _cbo) => FrameworkWorker.ListCallBackObjects.Enqueue(_cbo);
-        public static void RunToMainThread(Action<object> callBack, object obj) => RunToMainThread(new CallBackObject { CallBack = callBack, Result = obj });
-        
-        public static void AddToMainThread(CallBackObject _cbo) => FrameworkWorker.ListCallBackObjects.Enqueue(_cbo);
+        public static void RunToMainThread(Action<object> _callBack, object _obj) => RunToMainThread(new CallBackObject { CallBack = _callBack, Result = _obj });
         
         public static void Quit() => RunShutdown();
         

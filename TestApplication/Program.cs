@@ -8,7 +8,7 @@ namespace TestApplication
 {
     internal class Program : SapphireType
     {
-        public static void Main(string[] args) => Framework.Initialization<Program>(true);
+        public static void Main() => Framework.Initialization<Program>(true);
 
         public override void OnAwake()
         {

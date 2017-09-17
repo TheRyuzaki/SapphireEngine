@@ -8,38 +8,38 @@ namespace SapphireEngine.Functions
     public class HTTP
     {
 
-        public static void GetRequest(string url, Dictionary<string, string> args, Action<object> callback = null) => GetRequest(url + "?" + EncodeDataArgs(args), callback);
+        public static void GetRequest(string _url, Dictionary<string, string> _args, Action<object> _callback = null) => GetRequest(_url + "?" + EncodeDataArgs(_args), _callback);
         
-        public static void GetRequest(string url, Action<object> callback = null)
+        public static void GetRequest(string _url, Action<object> _callback = null)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 var cbo = new Struct.CallBackObject();
-                cbo.Result = new WebClient().DownloadString(url);
-                cbo.CallBack = callback;
-                if (callback != null)
-                    Framework.AddToMainThread(cbo);
+                cbo.Result = new WebClient().DownloadString(_url);
+                cbo.CallBack = _callback;
+                if (_callback != null)
+                    Framework.RunToMainThread(cbo);
             });
         }
         
-        public static void PostRequest(string url, Dictionary<string, string> args, Action<object> callback = null) => PostRequest(url, EncodeDataArgs(args), callback);
+        public static void PostRequest(string _url, Dictionary<string, string> _args, Action<object> _callback = null) => PostRequest(_url, EncodeDataArgs(_args), _callback);
         
-        public static void PostRequest(string url, string queryLine, Action<object> callback = null)
+        public static void PostRequest(string _url, string _queryLine, Action<object> _callback = null)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 var cbo = new Struct.CallBackObject();
-                cbo.Result = new WebClient().UploadString(url, queryLine);
-                cbo.CallBack = callback;
-                if (callback != null)
-                    Framework.AddToMainThread(cbo);
+                cbo.Result = new WebClient().UploadString(_url, _queryLine);
+                cbo.CallBack = _callback;
+                if (_callback != null)
+                    Framework.RunToMainThread(cbo);
             });
         }
 
-        public static string EncodeDataArgs(Dictionary<string, string> args)
+        public static string EncodeDataArgs(Dictionary<string, string> _args)
         {
             string result = string.Empty;
-            foreach (var row in args)
+            foreach (var row in _args)
                 result += ((result.Length != 0) ? "&" : "") + row.Key + "=" + row.Value;
             return result;
         }

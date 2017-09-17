@@ -26,19 +26,19 @@ namespace SapphireEngine.Functions
 
         public void Clear() => this.m_ticked = 0f;
 
-        public static Timer SetTimeout(Action callback, float timeout)
+        public static Timer SetTimeout(Action _callback, float _timeout)
         {
             Timer timer = Framework.Bootstraper.AddType<Timer>();
-            timer.Callback = callback;
-            timer.Interval = timeout;
+            timer.Callback = _callback;
+            timer.Interval = _timeout;
             return timer;
         }
         
-        public static Timer SetInterval(Action callback, float timeout)
+        public static Timer SetInterval(Action _callback, float _timeout)
         {
             Timer timer = Framework.Bootstraper.AddType<Timer>();
-            timer.Callback = callback;
-            timer.Interval = timeout;
+            timer.Callback = _callback;
+            timer.Interval = _timeout;
             timer.Repite = true;
             return timer;
         }
