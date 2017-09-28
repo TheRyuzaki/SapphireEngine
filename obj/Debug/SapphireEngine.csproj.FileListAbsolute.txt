@@ -3,3 +3,8 @@ C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\bin\Debug\SapphireEngin
 C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\obj\Debug\SapphireEngine.csprojResolveAssemblyReference.cache
 C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\obj\Debug\SapphireEngine.dll
 C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\obj\Debug\SapphireEngine.pdb
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\bin\Debug\SapphireEngine.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\bin\Debug\SapphireEngine.pdb
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\obj\Debug\SapphireEngine.csprojResolveAssemblyReference.cache
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\obj\Debug\SapphireEngine.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\obj\Debug\SapphireEngine.pdb

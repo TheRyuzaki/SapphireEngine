@@ -21,11 +21,11 @@ namespace SapphireEngine
                     {
                         case true:
                             if (!FrameworkWorker.ListActiveSapphireTypes.Contains(this))
-                                FrameworkWorker.ListAwakedSapphireTypes.Enqueue(this);
+                                FrameworkWorker.ListAwakedSapphireTypes.Add(this);
                             break;
                         case false:
                             if (FrameworkWorker.ListActiveSapphireTypes.Contains(this))
-                                FrameworkWorker.ListRemovedSapphireTypes.Enqueue(this);
+                                FrameworkWorker.ListRemovedSapphireTypes.Add(this);
                             break;
                     }
                     this.m_enable = value;

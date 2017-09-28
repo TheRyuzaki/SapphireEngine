@@ -18,8 +18,8 @@ namespace SapphireEngine
         
         internal static Dictionary<ulong, SapphireType> ListSapphireTypes = new Dictionary<ulong, SapphireType>();
         internal static List<SapphireType> ListActiveSapphireTypes = new List<SapphireType>();
-        internal static Queue<SapphireType> ListAwakedSapphireTypes = new Queue<SapphireType>();
-        internal static Queue<SapphireType> ListRemovedSapphireTypes = new Queue<SapphireType>();
+        internal static List<SapphireType> ListAwakedSapphireTypes = new List<SapphireType>();
+        internal static List<SapphireType> ListRemovedSapphireTypes = new List<SapphireType>();
         internal static Queue<CallBackObject> ListCallBackObjects = new Queue<CallBackObject>();
         
         private static ulong m_lastTypeUID = 0;
@@ -47,14 +47,18 @@ namespace SapphireEngine
                             ConsoleSystem.LogError($"Error to return Object to MainThread <{cbo.Result.GetType()}>: " + ex.Message);
                         }
                     }
-                    
-                    while (ListAwakedSapphireTypes.Count > 0)
+
+                    if (ListAwakedSapphireTypes.Count > 0)
                     {
-                        if (Framework.IsWork == false)
-                            break;
-                        ListActiveSapphireTypes.Add(ListAwakedSapphireTypes.Dequeue());
+                        for (int i = 0; i < ListAwakedSapphireTypes.Count; i++)
+                        {
+                            if (Framework.IsWork == false)
+                                break;
+                            ListActiveSapphireTypes.Add(ListAwakedSapphireTypes[i]);
+                        }
+                        ListAwakedSapphireTypes.Clear();
                     }
-                    
+
                     for (int i = 0; i < ListActiveSapphireTypes.Count; ++i)
                     {
                         if (Framework.IsWork == false)
@@ -70,11 +74,16 @@ namespace SapphireEngine
                             ConsoleSystem.LogError($"Error to {ListActiveSapphireTypes[i].GetType().Name}.OnUpdate(): " + ex.Message);
                         }
                     }
-                    while (ListRemovedSapphireTypes.Count > 0)
+                    
+                    if (ListRemovedSapphireTypes.Count > 0)
                     {
-                        if (Framework.IsWork == false)
-                            break;
-                        ListActiveSapphireTypes.Remove(ListRemovedSapphireTypes.Dequeue());
+                        for (int i = 0; i < ListRemovedSapphireTypes.Count; i++)
+                        {
+                            if (Framework.IsWork == false)
+                                break;
+                            ListActiveSapphireTypes.Remove(ListRemovedSapphireTypes[i]);
+                        }
+                        ListRemovedSapphireTypes.Clear();
                     }
                 }
                 catch (Exception ex)
