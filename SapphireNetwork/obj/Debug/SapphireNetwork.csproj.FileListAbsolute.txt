@@ -1,0 +1,5 @@
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\bin\Debug\SapphireNetwork.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\bin\Debug\SapphireNetwork.pdb
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\obj\Debug\SapphireNetwork.csprojResolveAssemblyReference.cache
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\obj\Debug\SapphireNetwork.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\obj\Debug\SapphireNetwork.pdb

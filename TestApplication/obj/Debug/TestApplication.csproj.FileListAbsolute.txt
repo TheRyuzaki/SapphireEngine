@@ -12,3 +12,8 @@ C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\Sa
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csprojResolveAssemblyReference.cache
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.exe
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.pdb
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.pdb
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\UnityEngine.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\Lidgren.Network.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\Lidgren.Network.xml
