@@ -15,5 +15,3 @@ C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\Te
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.dll
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.pdb
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\UnityEngine.dll
-C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\Lidgren.Network.dll
-C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\Lidgren.Network.xml

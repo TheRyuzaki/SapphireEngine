@@ -16,7 +16,19 @@ namespace TestApplication
     internal class Program : SapphireType
     {
         public static void Main() => Framework.Initialization<Program>(true);
+
+        NetworkServer BaseServer = new NetworkServer(new NetworkConfiguration());
         
+        
+        public override void OnAwake()
+        {
+            BaseServer.OnQueryRequest = OnQueryRequest;
+        }
+
+        private void OnQueryRequest(IPEndPoint ipEndPoint, byte[] bytes)
+        {
+            
+        }
 
         public override void OnDestroy()
         {
