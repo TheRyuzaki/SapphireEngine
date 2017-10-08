@@ -60,6 +60,16 @@ namespace SapphireNetwork
                 this.m_listdisconnected[connection] = reasone;
             }
         }
+
+        public bool SendUnconnectedMessage(IPEndPoint addres, byte[] buffer, int bytes_len)
+        {
+            if (this.Status)
+            {
+                this.BaseSocket.Send(buffer, bytes_len, addres);
+                return true;
+            }
+            return false;
+        }
         
 
         public void Cycle()
