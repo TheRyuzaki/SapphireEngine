@@ -7,9 +7,12 @@ namespace SapphireEngine
     public class Framework
     {
         public static bool IsWork { get; internal set; } = true;
-        public static int CountActiveTypes => FrameworkWorker.ListActiveSapphireTypes.Count;
-
         public static SapphireType Bootstraper { get; internal set; }
+        
+        
+        public static int CountActiveTypes => FrameworkWorker.ListActiveSapphireTypes.Count;
+        public static DateTime StartTimeApplication { get; internal set; } =  DateTime.Now;
+        
         internal static Native.HandlerOnShotdown OnApplicationShotdown;
 
         public static int FPSLimit
