@@ -50,7 +50,6 @@
     <Compile Include="Framework.cs" />
     <Compile Include="FrameworkWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingletonType.cs" />
     <Compile Include="Struct\CallBackObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,6 +7,7 @@ namespace SapphireEngine
     public class Framework
     {
         public static bool IsWork { get; internal set; } = true;
+        public static int CountActiveTypes => FrameworkWorker.ListActiveSapphireTypes.Count;
 
         public static SapphireType Bootstraper { get; internal set; }
         internal static Native.HandlerOnShotdown OnApplicationShotdown;
@@ -37,7 +38,7 @@ namespace SapphireEngine
             if (bootstraper is SapphireType)
             {
                  Bootstraper = bootstraper as SapphireType;
-                 Bootstraper.RunAwake();
+                 Bootstraper.RunAwake(true);
                 if (_consoleApplication)
                 {
                     Bootstraper.AddType<ConsoleSystem>();

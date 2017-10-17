@@ -20,12 +20,10 @@ namespace SapphireEngine
                     switch (value)
                     {
                         case true:
-                            if (!FrameworkWorker.ListActiveSapphireTypes.Contains(this))
-                                FrameworkWorker.ListAwakedSapphireTypes.Add(this);
+                            FrameworkWorker.ListAwakedSapphireTypes.Add(this);
                             break;
                         case false:
-                            if (FrameworkWorker.ListActiveSapphireTypes.Contains(this))
-                                FrameworkWorker.ListRemovedSapphireTypes.Add(this);
+                            FrameworkWorker.ListRemovedSapphireTypes.Add(this);
                             break;
                     }
                     this.m_enable = value;
@@ -51,7 +49,7 @@ namespace SapphireEngine
         
         #region [Method] [Example] AddType
 
-        public T AddType<T>()
+        public T AddType<T>(bool _defaultActive = true)
         {
             object instance = null;
             try
@@ -67,7 +65,7 @@ namespace SapphireEngine
             {
                 (instance as SapphireType).Parent = this;
                 this.Children.Add(instance as SapphireType);
-                (instance as SapphireType).RunAwake();
+                (instance as SapphireType).RunAwake(_defaultActive);
                 return (T)instance;
             }
             ConsoleSystem.LogError($"Error to {this.GetType().Name}.AddType<{typeof(T).FullName}>(), Type is not have nessed SapphireType");
@@ -183,13 +181,13 @@ namespace SapphireEngine
         
         #region [Method] [Example] RunAwake
 
-        internal void RunAwake()
+        internal void RunAwake(bool _defaultActive)
         {
             this.m_thistype = this.GetType();
             this.IntializationType();
             this.UID = FrameworkWorker.TakeNextUID;
             FrameworkWorker.ListSapphireTypes.Add(this.UID, this);
-            this.Enable = true;
+            this.Enable = _defaultActive;
             try
             {
                 this.OnAwake();

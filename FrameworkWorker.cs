@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using SapphireEngine.Struct;
 
@@ -54,7 +55,8 @@ namespace SapphireEngine
                         {
                             if (Framework.IsWork == false)
                                 break;
-                            ListActiveSapphireTypes.Add(ListAwakedSapphireTypes[i]);
+                            if (ListRemovedSapphireTypes.Contains(ListAwakedSapphireTypes[i]) == false && ListActiveSapphireTypes.Contains(ListAwakedSapphireTypes[i]) == false)
+                                ListActiveSapphireTypes.Add(ListAwakedSapphireTypes[i]);
                         }
                         ListAwakedSapphireTypes.Clear();
                     }
@@ -77,11 +79,13 @@ namespace SapphireEngine
                     
                     if (ListRemovedSapphireTypes.Count > 0)
                     {
+                        Console.WriteLine("ListRemovedSapphireTypes: " + ListRemovedSapphireTypes.Count);
                         for (int i = 0; i < ListRemovedSapphireTypes.Count; i++)
                         {
                             if (Framework.IsWork == false)
                                 break;
-                            ListActiveSapphireTypes.Remove(ListRemovedSapphireTypes[i]);
+                            if (ListRemovedSapphireTypes.Contains(ListRemovedSapphireTypes[i]) == false && ListActiveSapphireTypes.Contains(ListRemovedSapphireTypes[i]))
+                                ListActiveSapphireTypes.Remove(ListRemovedSapphireTypes[i]);
                         }
                         ListRemovedSapphireTypes.Clear();
                     }
