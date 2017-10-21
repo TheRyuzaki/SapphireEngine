@@ -32,7 +32,7 @@ namespace SapphireEngine
         }
         #endregion
         
-        public ulong UID { get; internal set; } 
+        public ulong TypeUID { get; internal set; } 
 
         public SapphireType Parent { get; internal set; }
         public List<SapphireType> Children { get; internal set; } = new List<SapphireType>();
@@ -185,8 +185,8 @@ namespace SapphireEngine
         {
             this.m_thistype = this.GetType();
             this.IntializationType();
-            this.UID = FrameworkWorker.TakeNextUID;
-            FrameworkWorker.ListSapphireTypes.Add(this.UID, this);
+            this.TypeUID = FrameworkWorker.TakeNextUID;
+            FrameworkWorker.ListSapphireTypes.Add(this.TypeUID, this);
             this.Enable = _defaultActive;
             try
             {
@@ -269,13 +269,13 @@ namespace SapphireEngine
         
         public void Dispose()
         {
-            if (this.UID != 0)
+            if (this.TypeUID != 0)
             {
                 for (var i = 0; i < this.Children.Count; ++i)
                     this.Children[i].Dispose();
                 this.Parent?.Children.Remove(this);
-                if (FrameworkWorker.ListSapphireTypes.ContainsKey(this.UID))
-                    FrameworkWorker.ListSapphireTypes.Remove(this.UID);
+                if (FrameworkWorker.ListSapphireTypes.ContainsKey(this.TypeUID))
+                    FrameworkWorker.ListSapphireTypes.Remove(this.TypeUID);
                 this.Enable = false;
                 this.RunDestroy();
             }
