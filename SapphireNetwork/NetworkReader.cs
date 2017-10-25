@@ -13,8 +13,8 @@ namespace SapphireNetwork
             get => this.m_buffer;
             set
             {
-                this.Position = 1;
                 this.m_buffer = value;
+                this.Position = 1;
             }
         }
         public int Length => this.Buffer.Length;
@@ -29,7 +29,7 @@ namespace SapphireNetwork
         
         public byte Byte()
         {
-            if (this.Position > this.Length + 1)
+            if (this.Length < this.Position + 1)
                 return 0;
             byte result = this.Buffer[this.Position];
             this.Position += 1;
@@ -40,7 +40,7 @@ namespace SapphireNetwork
 
         public Int16 Int16()
         {
-            if (this.Length > this.Position + 2)
+            if (this.Length < this.Position + 2)
                 return 0;
             System.Int16 result = BitConverter.ToInt16(this.Buffer, this.Position);
             this.Position += 2;
@@ -49,7 +49,7 @@ namespace SapphireNetwork
 
         public UInt16 UInt16()
         {
-            if (this.Length > this.Position + 2)
+            if (this.Length < this.Position + 2)
                 return 0;
             System.UInt16 result = BitConverter.ToUInt16(this.Buffer, this.Position);
             this.Position += 2;
@@ -58,7 +58,7 @@ namespace SapphireNetwork
 
         public Int32 Int32()
         {
-            if (this.Length > this.Position + 4)
+            if (this.Length < this.Position + 4)
                 return 0;
             System.Int32 result = BitConverter.ToInt32(this.Buffer, this.Position);
             this.Position += 4;
@@ -67,7 +67,7 @@ namespace SapphireNetwork
 
         public UInt32 UInt32()
         {
-            if (this.Length > this.Position + 4)
+            if (this.Length < this.Position + 4)
                 return 0;
             System.UInt32 result = BitConverter.ToUInt32(this.Buffer, this.Position);
             this.Position += 4;
@@ -76,7 +76,7 @@ namespace SapphireNetwork
 
         public Int64 Int64()
         {
-            if (this.Length > this.Position + 8)
+            if (this.Length < this.Position + 8)
                 return 0;
             System.Int64 result = BitConverter.ToInt64(this.Buffer, this.Position);
             this.Position += 8;
@@ -85,7 +85,7 @@ namespace SapphireNetwork
 
         public UInt64 UInt64()
         {
-            if (this.Length > this.Position + 8)
+            if (this.Length < this.Position + 8)
                 return 0;
             System.UInt64 result = BitConverter.ToUInt64(this.Buffer, this.Position);
             this.Position += 8;
@@ -94,7 +94,7 @@ namespace SapphireNetwork
 
         public Char Char()
         {
-            if (this.Length > this.Position + 2)
+            if (this.Length < this.Position + 2)
                 return '\x0';
             System.Char result = BitConverter.ToChar(this.Buffer, this.Position);
             this.Position += 2;
@@ -103,7 +103,7 @@ namespace SapphireNetwork
 
         public Double Double()
         {
-            if (this.Length > this.Position + 8)
+            if (this.Length < this.Position + 8)
                 return 0;
             System.Double result = BitConverter.ToDouble(this.Buffer, this.Position);
             this.Position += 8;
@@ -112,7 +112,7 @@ namespace SapphireNetwork
 
         public Single Float()
         {
-            if (this.Length > this.Position + 4)
+            if (this.Length < this.Position + 4)
                 return 0;
             System.Single result = BitConverter.ToSingle(this.Buffer, this.Position);
             this.Position += 4;
@@ -121,7 +121,7 @@ namespace SapphireNetwork
 
         public Byte[] Bytes(int length)
         {
-            if (this.Length > this.Position + length)
+            if (this.Length < this.Position + length)
                 return null;
             byte[] result = new byte[length];
             for (int i = 0; i < length; ++i)

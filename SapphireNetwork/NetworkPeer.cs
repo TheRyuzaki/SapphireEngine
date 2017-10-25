@@ -119,7 +119,7 @@ namespace SapphireNetwork
                                     if (this.m_listconnections.ContainsKey(packet.Addres))
                                     {
                                         this.m_listconnections[packet.Addres].SyncSended = false;
-                                        this.m_listconnections[packet.Addres].LastSyncTime = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                        this.m_listconnections[packet.Addres].UpdateSyncTime();
                                         if (this is NetworkServer)
                                             this.BaseSocket.Client.SendTo(new byte[] {252, 252, 252, 252}, packet.Addres);
                                     }
@@ -131,7 +131,7 @@ namespace SapphireNetwork
                         if (packet.Buffer[0] == this.Configuration.IndeficationByte && this.m_listconnections.ContainsKey(packet.Addres) && this.m_listconnections[packet.Addres].IsConnected)
                         {
                             this.Read.Buffer = packet.Buffer;
-                            this.m_listconnections[packet.Addres].LastSyncTime = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                            this.m_listconnections[packet.Addres].UpdateSyncTime();
                             OnMessage?.Invoke(this.m_listconnections[packet.Addres]);
                         }
                     }
