@@ -10,12 +10,17 @@ namespace SapphireEngine
         public static event Handler_OnConsoleInput OnConsoleInput;
         public static event Handler_OnConsoleInput OnReceivedLog;
 
-        private static Queue<string> ConsoleInputLines = new Queue<string>();
+        public static string OutputPath = "./output.log";
+
+        private static Stack<string> ConsoleInputLines = new Stack<string>();
 
         public override void OnUpdate()
         {
-            while (ConsoleInputLines.Count > 0)
-                OnConsoleInput?.Invoke(ConsoleInputLines.Dequeue());
+            if (OnConsoleInput != null && ConsoleInputLines.Count != 0)
+            {
+                string line = ConsoleInputLines.Pop();
+                OnConsoleInput(line);
+            }
         }
 
         internal static void Run()
@@ -23,7 +28,7 @@ namespace SapphireEngine
             while (Framework.IsWork)
             {
                 string line = Console.ReadLine();
-                ConsoleInputLines.Enqueue(line);
+                ConsoleInputLines.Push(line);
             }
         }
 
@@ -32,7 +37,7 @@ namespace SapphireEngine
             string line = string.Format($"[{DateTime.Now:HH:mm:ss fff}]: " + _format, _args);
             Console.WriteLine(line);
             OnReceivedLog?.Invoke(line);
-            File.AppendAllText("./output.log", "\n" + line);
+            File.AppendAllText(OutputPath, "\n" + line);
         }
 
         public static void LogWarning(string _format, params object[] _args)
