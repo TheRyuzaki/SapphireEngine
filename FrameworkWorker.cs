@@ -79,7 +79,6 @@ namespace SapphireEngine
                     
                     if (ListRemovedSapphireTypes.Count > 0)
                     {
-                        Console.WriteLine("ListRemovedSapphireTypes: " + ListRemovedSapphireTypes.Count);
                         for (int i = 0; i < ListRemovedSapphireTypes.Count; i++)
                         {
                             if (Framework.IsWork == false)

@@ -18,25 +18,24 @@ namespace TestApplication
         public static void Main() => Framework.Initialization<Program>(true);
 
         NetworkServer BaseServer = new NetworkServer(new NetworkConfiguration());
+        private NetworkClient BaseClient;
+        
         
         public override void OnAwake()
         {
             this.BaseServer.OnConnected = OnConnected;
-            this.BaseServer.OnMessage = OnMessage;
+            this.BaseServer.OnDisconnected = OnDisconnected;
             this.BaseServer.Start();
+            
+            BaseClient = new NetworkClient(new NetworkConfiguration() );
+            BaseClient.OnConnected = connection => { ConsoleSystem.Log("OnConnected Client"); };
+            BaseClient.OnDisconnected = (connection, s) => { ConsoleSystem.Log("Disconnected client reasone: " + s); };
+            BaseClient.Connect("127.0.0.1", 10015);
         }
 
-        private void OnMessage(NetworkConnection connection)
+        private void OnDisconnected(NetworkConnection networkConnection, string s)
         {
-            ConsoleSystem.Log("OnMessage");
-            ConsoleSystem.Log("0: " +  connection.Peer.Read.Byte());
-            ConsoleSystem.Log("1: " +  connection.Peer.Read.UInt64());
-            ConsoleSystem.Log("2: " +  connection.Peer.Read.String());
-            ConsoleSystem.Log("3: " +  connection.Peer.Read.Int32());
-            ConsoleSystem.Log("4: " +  connection.Peer.Read.Int32());
-            ConsoleSystem.Log("5: " +  connection.Peer.Read.String());
-            ConsoleSystem.Log("6: " +  connection.Peer.Read.String());
-            
+            ConsoleSystem.Log("Disconnected reasone: " + s);
         }
 
         private void OnConnected(NetworkConnection networkConnection)
@@ -46,7 +45,14 @@ namespace TestApplication
 
         public override void OnUpdate()
         {
-            this.BaseServer.Cycle();
+            if (BaseServer != null)
+            {
+                this.BaseServer.Cycle();
+            }
+            if (this.BaseClient != null)
+            {
+                this.BaseClient.Cycle();
+            }
         }
 
         public override void OnDestroy()

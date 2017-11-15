@@ -12,7 +12,7 @@ namespace SapphireNetwork
         public double LastSyncTime { get; private set; }
         public NetworkPeer Peer { get; internal set; }
 
-        internal bool SyncSended = false;
+        internal int m_listFailedSync = 1;
 
         public NetworkConnection(NetworkPeer peer, IPEndPoint addres)
         {
