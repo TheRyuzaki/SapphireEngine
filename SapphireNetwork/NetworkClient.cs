@@ -74,13 +74,13 @@ namespace SapphireNetwork
             {
                 if (this.IsConnected)
                     this.BaseSocket?.Client.SendTo(new byte[] { 254, 254, 254, 254}, this.ConnectedEndPoint);
-                OnDisconnected?.Invoke(this.Connection, reasone);
                 this.Status = false;
                 this.BaseSocket?.Close();
                 this.BaseSocket = null;
                 this.m_startConnectionTime = 0;
                 this.m_countFailedTick = 1;
                 this.ConnectedEndPoint = null;
+                OnDisconnected?.Invoke(this.Connection, reasone);
                 this.m_listconnections.Clear();
                 return true;
             }

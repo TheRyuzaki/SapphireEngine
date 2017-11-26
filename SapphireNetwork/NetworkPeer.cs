@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -161,15 +162,24 @@ namespace SapphireNetwork
 
                     }
 
-                    foreach (var connection in this.m_listdisconnected)
+                    if (this.m_listdisconnected.Count != 0)
                     {
-                        if (this.m_listconnections.TryGetValue(connection.Key.Addres, out _))
-                            this.m_listconnections.Remove(connection.Key.Addres);
-                        
-                        this.BaseSocket.Client.SendTo(new byte[] { 254, 254, 254, 254}, connection.Key.Addres);
-                        OnDisconnected?.Invoke(connection.Key, connection.Value);
+                        if (this is NetworkServer)
+                        {
+                            foreach (var connection in this.m_listdisconnected)
+                            {
+                                if (this.m_listconnections.TryGetValue(connection.Key.Addres, out _))
+                                    this.m_listconnections.Remove(connection.Key.Addres);
+
+                                this.BaseSocket.Client.SendTo(new byte[] {254, 254, 254, 254}, connection.Key.Addres);
+                                OnDisconnected?.Invoke(connection.Key, connection.Value);
+                            }
+                            this.m_listdisconnected.Clear();
+                        }
+                        else
+                            (this as NetworkClient).Disconnect(this.m_listdisconnected.First().Value);
                     }
-                    this.m_listdisconnected.Clear();
+
                 }
             }
         }
