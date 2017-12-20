@@ -36,7 +36,7 @@ namespace TestApplication
             };
             BaseServer.OnMessage = connection =>
             {
-                ConsoleSystem.Log("BaseServer.OnMessage: " + connection.Peer.Read.Length);
+                //ConsoleSystem.Log("BaseServer.OnMessage: " + connection.Peer.Read.Length);
             };
             BaseServer.Start();
             
@@ -51,7 +51,7 @@ namespace TestApplication
             };
             BaseClient.OnMessage = connection =>
             {
-                ConsoleSystem.Log("BaseClient.OnMessage: " + connection.Peer.Read.Length);
+                //ConsoleSystem.Log("BaseClient.OnMessage: " + connection.Peer.Read.Length);
             };
             this.BaseClient.Connect("127.0.0.1", 10015);
 
@@ -65,6 +65,7 @@ namespace TestApplication
             this.BaseServer.Write.Start();
             this.BaseServer.Write.Boolean(true);
             this.BaseServer.Write.SendToAll();
+            Console.Title = "FPS: " + (int)(1 / DeltaTime);
         }
 
         public override void OnDestroy()
