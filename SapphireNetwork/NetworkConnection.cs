@@ -9,21 +9,21 @@ namespace SapphireNetwork
         public object ConnectionProfile = null;
         
         public bool IsConnected { get; internal set; } = false;
-        public double LastSyncTime { get; private set; }
+        public int LastSyncTime { get; private set; }
         public NetworkPeer Peer { get; internal set; }
 
-        internal int m_listFailedSync = 1;
+        internal bool IsSyncedConnecion => this.LastSyncTime == (int) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
         public NetworkConnection(NetworkPeer peer, IPEndPoint addres)
         {
             this.Addres = addres;
             this.IsConnected = true;
             this.Peer = peer;
-            this.LastSyncTime = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            this.UpdateSyncTime();
         }
 
         public void Disconnect(string reasone) => this.Peer.KickConnection(this, reasone);
 
-        internal void UpdateSyncTime() => this.LastSyncTime = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        internal void UpdateSyncTime() => this.LastSyncTime = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
     }
 }

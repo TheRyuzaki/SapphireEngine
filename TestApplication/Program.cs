@@ -17,42 +17,54 @@ namespace TestApplication
     {
         public static void Main() => Framework.Initialization<Program>(true);
 
-        NetworkServer BaseServer = new NetworkServer(new NetworkConfiguration());
+        private NetworkServer BaseServer;
         private NetworkClient BaseClient;
-        
         
         public override void OnAwake()
         {
-            this.BaseServer.OnConnected = OnConnected;
-            this.BaseServer.OnDisconnected = OnDisconnected;
-            this.BaseServer.Start();
+            BaseServer = new NetworkServer(new NetworkConfiguration() { ServerPort = 10015 });
+            BaseServer.OnConnected = connection =>
+            {
+                ConsoleSystem.Log("BaseServer.OnConnected");
+                connection.Peer.Write.Start();
+                connection.Peer.Write.Boolean(true);
+                connection.Peer.Write.SendToAll();
+            };
+            BaseServer.OnDisconnected = (connection, s) =>
+            {
+                ConsoleSystem.Log("BaseServer.OnDisconnected: " + s);
+            };
+            BaseServer.OnMessage = connection =>
+            {
+                ConsoleSystem.Log("BaseServer.OnMessage: " + connection.Peer.Read.Length);
+            };
+            BaseServer.Start();
             
-            BaseClient = new NetworkClient(new NetworkConfiguration() );
-            BaseClient.OnConnected = connection => { ConsoleSystem.Log("OnConnected Client"); };
-            BaseClient.OnDisconnected = (connection, s) => { ConsoleSystem.Log("Disconnected client reasone: " + s); };
-            BaseClient.Connect("127.0.0.1", 10015);
-        }
+            BaseClient = new NetworkClient(new NetworkConfiguration());
+            BaseClient.OnConnected = connection =>
+            {
+                ConsoleSystem.Log("BaseClient.OnConnected");
+            };
+            BaseClient.OnDisconnected = (connection, s) =>
+            {
+                ConsoleSystem.Log("BaseClient.OnDisconnected: " + s);
+            };
+            BaseClient.OnMessage = connection =>
+            {
+                ConsoleSystem.Log("BaseClient.OnMessage: " + connection.Peer.Read.Length);
+            };
+            this.BaseClient.Connect("127.0.0.1", 10015);
 
-        private void OnDisconnected(NetworkConnection networkConnection, string s)
-        {
-            ConsoleSystem.Log("Disconnected reasone: " + s);
-        }
-
-        private void OnConnected(NetworkConnection networkConnection)
-        {
-            ConsoleSystem.Log("OnConnected");
         }
 
         public override void OnUpdate()
         {
-            if (BaseServer != null)
-            {
-                this.BaseServer.Cycle();
-            }
-            if (this.BaseClient != null)
-            {
-                this.BaseClient.Cycle();
-            }
+            this.BaseServer.Cycle();
+            this.BaseClient.Cycle();
+            
+            this.BaseServer.Write.Start();
+            this.BaseServer.Write.Boolean(true);
+            this.BaseServer.Write.SendToAll();
         }
 
         public override void OnDestroy()

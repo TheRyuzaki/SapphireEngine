@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace SapphireNetwork
@@ -96,7 +97,17 @@ namespace SapphireNetwork
                                 if (packet.Buffer[1] == 254 && packet.Buffer.Length > 3 && packet.Buffer[2] == 254 && packet.Buffer[3] == 254)
                                 {
                                     if (this.m_listconnections.TryGetValue(packet.Addres, out var connection))
-                                        this.KickConnection(connection, "Disconnected");
+                                    {
+                                        string reasone = "Disconnected";
+                                        if (packet.Buffer.Length != 4)
+                                        {
+                                            byte[] reasoneBuffer = new byte[packet.Buffer.Length - 4];
+                                            for (int i = 4; i < packet.Buffer.Length; ++i)
+                                                reasoneBuffer[i - 4] = packet.Buffer[i];
+                                            reasone = Encoding.ASCII.GetString(reasoneBuffer);
+                                        }
+                                        this.KickConnection(connection, reasone);
+                                    }
                                     continue;
                                 }
                                 break;
@@ -118,21 +129,14 @@ namespace SapphireNetwork
                                 if (packet.Buffer[1] == 252 && packet.Buffer.Length > 3 && packet.Buffer[2] == 252 && packet.Buffer[3] == 252)
                                 {
                                     if (this.m_listconnections.TryGetValue(packet.Addres, out var connection))
-                                    {
-                                        connection.m_listFailedSync = 1;
                                         connection.UpdateSyncTime();
-                                        if (this is NetworkServer)
-                                            this.BaseSocket.Client.SendTo(new byte[] {252, 252, 252, 252}, packet.Addres);
-                                    }
                                     continue;
                                 }
                                 break;
                         }
-                        NetworkConnection connection_end;
-                        if (packet.Buffer[0] == this.Configuration.IndeficationByte && this.m_listconnections.TryGetValue(packet.Addres, out connection_end) && this.m_listconnections[packet.Addres].IsConnected)
+                        if (packet.Buffer[0] == this.Configuration.IndeficationByte && this.m_listconnections.TryGetValue(packet.Addres, out NetworkConnection connection_end) && this.m_listconnections[packet.Addres].IsConnected)
                         {
                             this.Read.Buffer = packet.Buffer;
-                            connection_end.UpdateSyncTime();
                             OnMessage?.Invoke(connection_end);
                         }
                     }
@@ -140,25 +144,16 @@ namespace SapphireNetwork
 
                 if (this.m_listconnections.Count != 0)
                 {
-                    double thisTime = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    int thisTime = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     foreach (var connection in this.m_listconnections)
                     {
                         if (thisTime - connection.Value.LastSyncTime >= this.Configuration.TimeOut)
                         {
                             this.KickConnection(connection.Value, "Time Out!");
                         }
-                        else if (this is NetworkClient)
-                        {
-                            int lastSyncSecondAftered = (int)(thisTime - connection.Value.LastSyncTime);
-                            if (lastSyncSecondAftered > this.Configuration.TimeOut / 2)
-                            {
-                                if ((int) thisTime == (int) (this.Configuration.TimeOut / 2) + (int) connection.Value.LastSyncTime + connection.Value.m_listFailedSync)
-                                {
-                                    connection.Value.m_listFailedSync++;
-                                    this.BaseSocket.Client.SendTo(new byte[] {252, 252, 252, 252}, connection.Key);
-                                }
-                            }
-                        }
+                        else if ((int) thisTime != (int) connection.Value.LastSyncTime)
+                            this.BaseSocket.Client.SendTo(new byte[] {252, 252, 252, 252}, connection.Key);
+                        
 
                     }
 
@@ -171,7 +166,10 @@ namespace SapphireNetwork
                                 if (this.m_listconnections.TryGetValue(connection.Key.Addres, out _))
                                     this.m_listconnections.Remove(connection.Key.Addres);
 
-                                this.BaseSocket.Client.SendTo(new byte[] {254, 254, 254, 254}, connection.Key.Addres);
+                                List<Byte> disconnectBytes = new List<byte>() { 254, 254, 254, 254 };
+                                disconnectBytes.AddRange(Encoding.ASCII.GetBytes(connection.Value));
+                                
+                                this.BaseSocket.Client.SendTo(disconnectBytes.ToArray(), connection.Key.Addres);
                                 OnDisconnected?.Invoke(connection.Key, connection.Value);
                             }
                             this.m_listdisconnected.Clear();
