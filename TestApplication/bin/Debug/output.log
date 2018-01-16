@@ -9965,3 +9965,6 @@
 [05:50:00 726]: BaseClient.OnMessage: 2
 [05:50:00 737]: BaseClient.OnMessage: 2
 [05:50:00 749]: OnDestroy
+[05:50:46 039]: BaseServer.OnConnected
+[05:50:46 071]: BaseClient.OnConnected
+[05:50:54 550]: OnDestroy

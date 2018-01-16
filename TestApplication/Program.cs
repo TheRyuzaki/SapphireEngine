@@ -22,7 +22,7 @@ namespace TestApplication
         
         public override void OnAwake()
         {
-            BaseServer = new NetworkServer(new NetworkConfiguration() { ServerPort = 10015 });
+            BaseServer = new NetworkServer(new NetworkConfiguration(0x00) { ServerPort = 10015 });
             BaseServer.OnConnected = connection =>
             {
                 ConsoleSystem.Log("BaseServer.OnConnected");
@@ -40,7 +40,7 @@ namespace TestApplication
             };
             BaseServer.Start();
             
-            BaseClient = new NetworkClient(new NetworkConfiguration());
+            BaseClient = new NetworkClient(new NetworkConfiguration(0x00));
             BaseClient.OnConnected = connection =>
             {
                 ConsoleSystem.Log("BaseClient.OnConnected");

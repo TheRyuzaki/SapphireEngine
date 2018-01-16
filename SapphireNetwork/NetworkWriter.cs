@@ -34,7 +34,7 @@ namespace SapphireNetwork
         {
             if (this.Peer.Status)
             {
-                this.Buffer = new byte[0];
+                this.Buffer = new byte[] {this.Peer.Configuration.IndeficationByte};
                 return true;
             }
             return false;

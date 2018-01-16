@@ -10,7 +10,7 @@ namespace SapphireNetwork
 {
     public class NetworkPeer
     {
-        public NetworkConfiguration Configuration { get; internal set; }
+        public NetworkConfiguration Configuration;
         public UdpClient BaseSocket { get; internal set; }
         public NetworkWriter Write { get; internal set; }
         public NetworkReader Read { get; internal set; }
@@ -112,12 +112,12 @@ namespace SapphireNetwork
                                 }
                                 break;
                             case 253:
-                                if (packet.Buffer[1] == 253 && packet.Buffer.Length > 4 && packet.Buffer[2] == 253 && packet.Buffer[3] == 253)
+                                if (packet.Buffer[1] == 253 && packet.Buffer.Length > 4 && packet.Buffer[2] == 253 && packet.Buffer[3] == 253 && packet.Buffer[4] == this.Configuration.IndeficationByte)
                                 {
                                     if (this.m_listconnections.TryGetValue(packet.Addres, out _) == false)
                                     {
                                         if (this is NetworkServer)
-                                            this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253}, packet.Addres);
+                                            this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, packet.Addres);
                                         
                                         this.m_listconnections[packet.Addres] = new NetworkConnection(this, packet.Addres);
                                         OnConnected?.Invoke(this.m_listconnections[packet.Addres]);
@@ -136,7 +136,11 @@ namespace SapphireNetwork
                                 }
                                 break;
                         }
-                        if (this.m_listconnections.TryGetValue(packet.Addres, out NetworkConnection connection_end) && this.m_listconnections[packet.Addres].IsConnected)
+                        
+                        if (this.Configuration.Cryptor != null)
+                            packet.Buffer = this.Configuration.Cryptor.Decryption(packet.Buffer);
+                        
+                        if (packet.Buffer[0] == this.Configuration.IndeficationByte && this.m_listconnections.TryGetValue(packet.Addres, out NetworkConnection connection_end) && this.m_listconnections[packet.Addres].IsConnected)
                         {
                             this.Read.Buffer = packet.Buffer;
                             OnMessage?.Invoke(connection_end);
