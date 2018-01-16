@@ -30,7 +30,7 @@ namespace SapphireNetwork
             {
                 this.ConnectedEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
                 this.BaseSocket = new UdpClient();
-                this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, this.ConnectedEndPoint);
+                this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253}, this.ConnectedEndPoint);
                 this.m_startConnectionTime = (Int32) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 this.m_countFailedTick = 1;
                 this.Status = true;
@@ -55,7 +55,7 @@ namespace SapphireNetwork
                     if (this.m_countFailedTick < this.Configuration.TimeOut)
                     {
                         this.m_countFailedTick++;
-                        this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, this.ConnectedEndPoint);
+                        this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253}, this.ConnectedEndPoint);
                     }
                     else
                         this.Disconnect("Time Out!");

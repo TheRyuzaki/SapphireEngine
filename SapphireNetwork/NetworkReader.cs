@@ -14,7 +14,9 @@ namespace SapphireNetwork
             set
             {
                 this.m_buffer = value;
-                this.Position = 1;
+                if (this.Peer.Configuration.Cryptor != null)
+                    this.m_buffer = this.Peer.Configuration.Cryptor.Decryption(this.m_buffer);
+                this.Position = 0;
             }
         }
         public int Length => this.Buffer.Length;

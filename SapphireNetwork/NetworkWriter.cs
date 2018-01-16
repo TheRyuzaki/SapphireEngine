@@ -34,7 +34,7 @@ namespace SapphireNetwork
         {
             if (this.Peer.Status)
             {
-                this.Buffer = new byte[] {this.Peer.Configuration.IndeficationByte};
+                this.Buffer = new byte[0];
                 return true;
             }
             return false;
@@ -42,18 +42,27 @@ namespace SapphireNetwork
         
         public void Send(List<NetworkConnection> connections)
         {
-            byte[] buffer = this.Buffer;
+            if (this.Peer.Configuration.Cryptor != null)
+                this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
+            
             for (int i = 0; i < connections.Count; ++i)
-                this.Peer.BaseSocket.Client.SendTo(buffer, connections[i].Addres);
+                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connections[i].Addres);
         }
 
-        public void SendTo(NetworkConnection connection) => this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Addres);
+        public void SendTo(NetworkConnection connection)
+        {
+            if (this.Peer.Configuration.Cryptor != null)
+                this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
+            this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Addres);
+        }
 
         public void SendToAll()
         {
-            byte[] buffer = this.Buffer;
+            if (this.Peer.Configuration.Cryptor != null)
+                this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
+            
             foreach (var connection in this.Peer.m_listconnections)
-                this.Peer.BaseSocket.Client.SendTo(buffer, connection.Key);    
+                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Key);    
         }
         
         public void Byte(byte arg)

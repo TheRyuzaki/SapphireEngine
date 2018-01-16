@@ -49,28 +49,30 @@ namespace SapphireEngine
         
         #region [Method] [Example] AddType
 
-        public T AddType<T>(bool _defaultActive = true)
+        public object AddType(Type _type, bool _defaultActive = true)
         {
             object instance = null;
             try
             {
-                instance = Activator.CreateInstance(typeof(T), true);
+                instance = Activator.CreateInstance(_type, true);
             }
             catch (Exception ex)
             {
-                ConsoleSystem.LogError($"Error to {this.GetType().Name}.AddType<{typeof(T).FullName}>(), Type is not created: " + ex.Message);
-                return (T)instance;
+                ConsoleSystem.LogError($"Error to {this.GetType().Name}.AddType<{_type.FullName}>(), Type is not created: " + ex.Message);
+                return instance;
             }
             if (instance is SapphireType)
             {
                 (instance as SapphireType).Parent = this;
                 this.Children.Add(instance as SapphireType);
                 (instance as SapphireType).RunAwake(_defaultActive);
-                return (T)instance;
+                return instance;
             }
-            ConsoleSystem.LogError($"Error to {this.GetType().Name}.AddType<{typeof(T).FullName}>(), Type is not have nessed SapphireType");
-            return (T)instance;
+            ConsoleSystem.LogError($"Error to {this.GetType().Name}.AddType<{_type.FullName}>(), Type is not have nessed SapphireType");
+            return instance;
         }
+
+        public T AddType<T>(bool _defaultActive = true) => (T)this.AddType(typeof(T), _defaultActive);
 
         #endregion
         

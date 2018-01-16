@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="INetworkBuffer.cs" />
+    <Compile Include="INetworkCryptor.cs" />
     <Compile Include="NetworkClient.cs" />
     <Compile Include="NetworkConfiguration.cs" />
     <Compile Include="NetworkConnection.cs" />

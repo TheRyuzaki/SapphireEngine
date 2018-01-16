@@ -11,6 +11,7 @@ namespace SapphireEngine
         public static event Handler_OnConsoleInput OnReceivedLog;
 
         public static string OutputPath = "./output.log";
+        public static bool IsOutputToFile = true;
 
         private static Stack<string> ConsoleInputLines = new Stack<string>();
 
@@ -37,7 +38,8 @@ namespace SapphireEngine
             string line = string.Format($"[{DateTime.Now:HH:mm:ss fff}]: " + _format, _args);
             Console.WriteLine(line);
             OnReceivedLog?.Invoke(line);
-            File.AppendAllText(OutputPath, "\n" + line);
+            if (IsOutputToFile)
+                File.AppendAllText(OutputPath, "\n" + line);
         }
 
         public static void LogWarning(string _format, params object[] _args)
