@@ -179,10 +179,10 @@ namespace SapphireNetwork
                                 this.BaseSocket.Client.SendTo(disconnectBytes.ToArray(), connection.Key.Addres);
                                 OnDisconnected?.Invoke(connection.Key, connection.Value);
                             }
-                            this.m_listdisconnected.Clear();
                         }
                         else
                             (this as NetworkClient).Disconnect(this.m_listdisconnected.First().Value);
+                        this.m_listdisconnected.Clear();
                     }
 
                 }

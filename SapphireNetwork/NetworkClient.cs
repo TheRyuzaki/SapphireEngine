@@ -58,7 +58,9 @@ namespace SapphireNetwork
                         this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, this.ConnectedEndPoint);
                     }
                     else
+                    {
                         this.Disconnect("Time Out!");
+                    }
                 }
             }
         }
