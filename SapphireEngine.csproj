@@ -41,6 +41,10 @@
   <ItemGroup>
     <Compile Include="CommandLine.cs" />
     <Compile Include="ConsoleSystem.cs" />
+    <Compile Include="Database\IDatabaseObject.cs" />
+    <Compile Include="Database\Manager.cs" />
+    <Compile Include="Functions\BufferReader.cs" />
+    <Compile Include="Functions\BufferWriter.cs" />
     <Compile Include="Functions\IPAddres.cs" />
     <Compile Include="Functions\TimeDebugger.cs" />
     <Compile Include="Functions\Timer.cs" />

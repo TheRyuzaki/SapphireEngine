@@ -25,6 +25,8 @@ namespace SapphireEngine
 
         public static void Initialization<T>(bool _consoleApplication = true)
         {
+            Console.WriteLine("Framework created by TheRyuzaki");
+            
             OnApplicationShotdown += RunShutdown;
             Native.SetSignalHandler(OnApplicationShotdown, true);
             

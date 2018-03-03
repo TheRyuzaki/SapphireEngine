@@ -2,23 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d9ce2b5-aa20-48a7-8631-b2579038bcb6" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/Functions/BufferReader.cs" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SapphireEngineVersion2/.idea/contentModel.xml" afterPath="$PROJECT_DIR$/.idea/.idea.SapphireEngineVersion2/.idea/contentModel.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SapphireEngineVersion2/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/.idea.SapphireEngineVersion2/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/SapphireNetwork/NetworkClient.cs" afterPath="$PROJECT_DIR$/SapphireNetwork/NetworkClient.cs" />
-      <change beforePath="$PROJECT_DIR$/SapphireNetwork/NetworkPeer.cs" afterPath="$PROJECT_DIR$/SapphireNetwork/NetworkPeer.cs" />
-      <change beforePath="$PROJECT_DIR$/SapphireNetwork/bin/Debug/SapphireNetwork.dll" afterPath="$PROJECT_DIR$/SapphireNetwork/bin/Debug/SapphireNetwork.dll" />
-      <change beforePath="$PROJECT_DIR$/SapphireNetwork/bin/Debug/SapphireNetwork.pdb" afterPath="$PROJECT_DIR$/SapphireNetwork/bin/Debug/SapphireNetwork.pdb" />
-      <change beforePath="$PROJECT_DIR$/SapphireNetwork/obj/Debug/SapphireNetwork.dll" afterPath="$PROJECT_DIR$/SapphireNetwork/obj/Debug/SapphireNetwork.dll" />
-      <change beforePath="$PROJECT_DIR$/SapphireNetwork/obj/Debug/SapphireNetwork.pdb" afterPath="$PROJECT_DIR$/SapphireNetwork/obj/Debug/SapphireNetwork.pdb" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/Program.cs" afterPath="$PROJECT_DIR$/TestApplication/Program.cs" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/bin/Debug/SapphireEngine.dll" afterPath="$PROJECT_DIR$/TestApplication/bin/Debug/SapphireEngine.dll" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/bin/Debug/SapphireNetwork.dll" afterPath="$PROJECT_DIR$/TestApplication/bin/Debug/SapphireNetwork.dll" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/bin/Debug/SapphireNetwork.pdb" afterPath="$PROJECT_DIR$/TestApplication/bin/Debug/SapphireNetwork.pdb" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/bin/Debug/TestApplication.exe" afterPath="$PROJECT_DIR$/TestApplication/bin/Debug/TestApplication.exe" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/bin/Debug/TestApplication.pdb" afterPath="$PROJECT_DIR$/TestApplication/bin/Debug/TestApplication.pdb" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/bin/Debug/output.log" afterPath="$PROJECT_DIR$/TestApplication/bin/Debug/output.log" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/obj/Debug/TestApplication.csprojResolveAssemblyReference.cache" afterPath="$PROJECT_DIR$/TestApplication/obj/Debug/TestApplication.csprojResolveAssemblyReference.cache" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/obj/Debug/TestApplication.exe" afterPath="$PROJECT_DIR$/TestApplication/obj/Debug/TestApplication.exe" />
-      <change beforePath="$PROJECT_DIR$/TestApplication/obj/Debug/TestApplication.pdb" afterPath="$PROJECT_DIR$/TestApplication/obj/Debug/TestApplication.pdb" />
+      <change beforePath="$PROJECT_DIR$/Framework.cs" afterPath="$PROJECT_DIR$/Framework.cs" />
+      <change beforePath="$PROJECT_DIR$/SapphireEngine.csproj" afterPath="$PROJECT_DIR$/SapphireEngine.csproj" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/SapphireEngine.dll" afterPath="$PROJECT_DIR$/bin/Debug/SapphireEngine.dll" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/SapphireEngine.dll" afterPath="$PROJECT_DIR$/obj/Debug/SapphireEngine.dll" />
     </list>
@@ -34,7 +22,7 @@
       <file leaf-file-name="Program.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/TestApplication/Program.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
+            <state relative-caret-position="0">
               <caret line="44" column="60" lean-forward="false" selection-start-line="44" selection-start-column="60" selection-end-line="44" selection-end-column="60" />
               <folding>
                 <marker date="1516067841802" expanded="false" signature="6:277" ph="..." />
@@ -60,10 +48,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NetworkPeer.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="NetworkPeer.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkPeer.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="587">
+            <state relative-caret-position="608">
               <caret line="179" column="69" lean-forward="false" selection-start-line="179" selection-start-column="66" selection-end-line="179" selection-end-column="69" />
               <folding>
                 <marker date="1517067576984" expanded="false" signature="6:153" ph="..." />
@@ -104,14 +92,124 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Manager.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Database/Manager.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="439">
+              <caret line="98" column="56" lean-forward="false" selection-start-line="98" selection-start-column="56" selection-end-line="98" selection-end-column="56" />
+              <folding>
+                <marker date="1520078096170" expanded="true" signature="6:121" ph="..." />
+                <marker date="1520078096170" expanded="true" signature="156:9288" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="183:9286" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="214:417" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="569:843" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="641:833" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="910:4212" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="1120:4202" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="1311:4025" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="1390:4007" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="4356:4927" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="4625:4871" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="5067:9280" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="5246:9052" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="5380:9038" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="5768:8982" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="5997:8960" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="6092:8934" ph="{...}" />
+                <marker date="1520078096170" expanded="true" signature="9085:9245" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BufferReader.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/BufferReader.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="576">
+              <caret line="37" column="22" lean-forward="false" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
+              <folding>
+                <marker date="1520070243389" expanded="false" signature="6:32" ph="..." />
+                <marker date="1520070243389" expanded="true" signature="68:3359" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="114:3357" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="173:325" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="189:235" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="245:319" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="348:421" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="364:415" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="505:549" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="573:732" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="759:808" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="834:1023" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="1051:1244" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="1268:1455" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="1481:1672" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="1697:1885" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="1912:2104" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="2128:2321" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="2349:2538" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="2564:2759" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="2796:3095" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="3123:3286" ph="{...}" />
+                <marker date="1520070243389" expanded="true" signature="3313:3353" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BufferWriter.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Functions/BufferWriter.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1991">
+              <caret line="129" column="11" lean-forward="false" selection-start-line="129" selection-start-column="11" selection-end-line="129" selection-end-column="11" />
+              <folding>
+                <marker date="1520070243402" expanded="true" signature="6:49" ph="..." />
+                <marker date="1520070243402" expanded="true" signature="85:3075" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="129:3073" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="221:453" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="291:447" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="476:529" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="600:632" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="657:721" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="753:830" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="865:921" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="955:1110" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="1146:1301" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="1333:1488" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="1522:1677" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="1710:1865" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="1900:2055" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="2087:2242" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="2278:2433" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="2467:2622" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="2657:2757" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="2793:2992" ph="{...}" />
+                <marker date="1520070243402" expanded="true" signature="3019:3069" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IDatabaseObject.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Database/IDatabaseObject.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="96">
+              <caret line="6" column="5" lean-forward="false" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+              <folding>
+                <marker date="1520078096151" expanded="true" signature="6:58" ph="..." />
+                <marker date="1520078096151" expanded="true" signature="93:178" ph="{...}" />
+                <marker date="1520078096151" expanded="true" signature="132:176" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="NetworkServer.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkServer.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
+            <state relative-caret-position="400">
               <caret line="28" column="15" lean-forward="false" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
               <folding>
                 <marker date="1508445261395" expanded="false" signature="6:91" ph="..." />
-                <marker date="1508445261395" expanded="true" signature="118:2415" ph="{...}" />
                 <marker date="1508445261395" expanded="true" signature="165:2413" ph="{...}" />
                 <marker date="1508445261395" expanded="true" signature="476:509" ph="{...}" />
                 <marker date="1508445261395" expanded="true" signature="663:1755" ph="{...}" />
@@ -128,27 +226,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NetworkConfiguration.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkConfiguration.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="17" column="1" lean-forward="false" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
-              <folding>
-                <marker date="1516067479228" expanded="true" signature="80:459" ph="{...}" />
-                <marker date="1516067479228" expanded="true" signature="379:453" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="NetworkClient.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkClient.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
+            <state relative-caret-position="1024">
               <caret line="67" column="26" lean-forward="false" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
               <folding>
                 <marker date="1517067576976" expanded="false" signature="6:76" ph="..." />
-                <marker date="1517067576976" expanded="true" signature="103:3655" ph="{...}" />
                 <marker date="1517067576976" expanded="true" signature="150:3653" ph="{...}" />
                 <marker date="1517067576976" expanded="true" signature="606:639" ph="{...}" />
                 <marker date="1517067576976" expanded="true" signature="699:1741" ph="{...}" />
@@ -169,55 +253,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="INetworkCryptor.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SapphireNetwork/INetworkCryptor.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="80">
-              <caret line="5" column="41" lean-forward="false" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
-              <folding>
-                <marker date="1516057627657" expanded="true" signature="64:160" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NetworkWriter.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkWriter.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-              <folding>
-                <marker date="1516067279210" expanded="false" signature="6:102" ph="..." />
-                <marker date="1516067279210" expanded="true" signature="179:5300" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="256:528" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="327:518" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="739:789" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="826:1048" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="870:1012" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="1119:1440" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="1498:1742" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="1775:2105" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="2149:2249" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="2288:2352" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="2390:2575" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="2615:2800" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="2838:3023" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="3063:3248" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="3286:3471" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="3511:3696" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="3732:3917" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="3957:4142" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="4181:4366" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="4405:4538" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="4586:4821" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="4871:4953" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="4995:5108" ph="{...}" />
-                <marker date="1516067279210" expanded="true" signature="5150:5294" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="NetworkConnection.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkConnection.cs">
           <provider selected="true" editor-type-id="text-editor">
@@ -225,22 +260,8 @@
               <caret line="20" column="12" lean-forward="false" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="40" />
               <folding>
                 <marker date="1513734415110" expanded="false" signature="6:31" ph="..." />
-                <marker date="1513734415110" expanded="true" signature="58:1064" ph="{...}" />
                 <marker date="1513734415110" expanded="true" signature="95:1062" ph="{...}" />
                 <marker date="1513734415110" expanded="true" signature="519:681" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="INetworkBuffer.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SapphireNetwork/INetworkBuffer.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="64">
-              <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-              <folding>
-                <marker date="1508445261392" expanded="false" signature="6:30" ph="..." />
-                <marker date="1508445261392" expanded="true" signature="95:244" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -310,6 +331,19 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Functions/BufferWriter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Functions/BufferReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Struct/CallBackObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Functions/HTTP.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Database/IDatabaseObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Functions/Timer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Database/Manager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkServer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/FrameworkWorker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkReceivedPacket.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/34A35503-F2FC-438E-A008-60BEF871BCA8/8c/e5c7ba31/UdpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkConnection.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/34A35503-F2FC-438E-A008-60BEF871BCA8/3d/e2bdbc2b/Socket.cs" root0="SKIP_INSPECTION" />
@@ -319,19 +353,10 @@
     <setting file="file://$PROJECT_DIR$/SapphireType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SapphireNetwork/INetworkBuffer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ConsoleSystem.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Struct/CallBackObject.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Functions/HTTP.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Functions/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Native.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/SapphireNetwork/INetworkCryptor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkClient.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkServer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Framework.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/FrameworkWorker.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2BA00230-811F-478D-B9EB-C6517B2AC448/8c/2feb7238/Socket.cs" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/SapphireNetwork/NetworkReceivedPacket.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -368,6 +393,14 @@
         <option value="$PROJECT_DIR$/TestApplication/Program.cs" />
         <option value="$PROJECT_DIR$/SapphireNetwork/NetworkPeer.cs" />
         <option value="$PROJECT_DIR$/SapphireNetwork/NetworkClient.cs" />
+        <option value="$PROJECT_DIR$/Database/NetworkReader.cs" />
+        <option value="$PROJECT_DIR$/Database/NetworkWriter.cs" />
+        <option value="$PROJECT_DIR$/Database/BufferWriter.cs" />
+        <option value="$PROJECT_DIR$/Database/BufferReader.cs" />
+        <option value="$PROJECT_DIR$/Functions/BufferWriter.cs" />
+        <option value="$PROJECT_DIR$/Functions/BufferReader.cs" />
+        <option value="$PROJECT_DIR$/Database/Manager.cs" />
+        <option value="$PROJECT_DIR$/Database/IDatabaseObject.cs" />
       </list>
     </option>
   </component>
@@ -377,11 +410,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-18" />
     <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
     <navigator currentView="SolutionExplorer" proportions="" version="1">
@@ -409,7 +441,19 @@
             <path>
               <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
               <item name="SapphireEngineVersion2 (3 projects)" type="977d5f41:SolutionExplorerNodeRider" />
-              <item name="SapphireNetwork" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="SapphireEngine" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="SapphireEngineVersion2 (3 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="SapphireEngine" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Database" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="SapphireEngineVersion2 (3 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="SapphireEngine" type="977d5f41:SolutionExplorerNodeRider" />
+              <item name="Functions" type="977d5f41:SolutionExplorerNodeRider" />
             </path>
           </expand>
           <select />
@@ -553,11 +597,12 @@
       <workItem from="1515910548805" duration="844000" />
       <workItem from="1516056163114" duration="5581000" />
       <workItem from="1517061256564" duration="1188000" />
+      <workItem from="1520066365927" duration="9178000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="215724000" />
+    <option name="totallyTimeSpent" value="224902000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -569,29 +614,29 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -609,48 +654,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Struct/CallBackObject.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="32" lean-forward="false" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SapphireType.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3920">
-          <caret line="247" column="37" lean-forward="false" selection-start-line="247" selection-start-column="37" selection-end-line="247" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Functions/HTTP.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="36" column="9" lean-forward="false" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Native.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="7" column="52" lean-forward="false" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ConsoleSystem.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="17" column="40" lean-forward="true" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Framework.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="848">
-          <caret line="53" column="9" lean-forward="false" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Functions/Timer.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -870,7 +873,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -979,7 +981,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TestApplication/Program.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
+        <state relative-caret-position="0">
           <caret line="44" column="60" lean-forward="false" selection-start-line="44" selection-start-column="60" selection-end-line="44" selection-end-column="60" />
           <folding>
             <marker date="1516067841802" expanded="false" signature="6:277" ph="..." />
@@ -1006,11 +1008,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkServer.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
+        <state relative-caret-position="400">
           <caret line="28" column="15" lean-forward="false" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
           <folding>
             <marker date="1508445261395" expanded="false" signature="6:91" ph="..." />
-            <marker date="1508445261395" expanded="true" signature="118:2415" ph="{...}" />
             <marker date="1508445261395" expanded="true" signature="165:2413" ph="{...}" />
             <marker date="1508445261395" expanded="true" signature="476:509" ph="{...}" />
             <marker date="1508445261395" expanded="true" signature="663:1755" ph="{...}" />
@@ -1032,7 +1033,6 @@
           <caret line="20" column="12" lean-forward="false" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="40" />
           <folding>
             <marker date="1513734415110" expanded="false" signature="6:31" ph="..." />
-            <marker date="1513734415110" expanded="true" signature="58:1064" ph="{...}" />
             <marker date="1513734415110" expanded="true" signature="95:1062" ph="{...}" />
             <marker date="1513734415110" expanded="true" signature="519:681" ph="{...}" />
           </folding>
@@ -1041,11 +1041,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkClient.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
+        <state relative-caret-position="1024">
           <caret line="67" column="26" lean-forward="false" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
           <folding>
             <marker date="1517067576976" expanded="false" signature="6:76" ph="..." />
-            <marker date="1517067576976" expanded="true" signature="103:3655" ph="{...}" />
             <marker date="1517067576976" expanded="true" signature="150:3653" ph="{...}" />
             <marker date="1517067576976" expanded="true" signature="606:639" ph="{...}" />
             <marker date="1517067576976" expanded="true" signature="699:1741" ph="{...}" />
@@ -1067,7 +1066,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SapphireNetwork/NetworkPeer.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="587">
+        <state relative-caret-position="608">
           <caret line="179" column="69" lean-forward="false" selection-start-line="179" selection-start-column="66" selection-end-line="179" selection-end-column="69" />
           <folding>
             <marker date="1517067576984" expanded="false" signature="6:153" ph="..." />
@@ -1103,6 +1102,125 @@
             <marker date="1517067576984" expanded="true" signature="8020:9128" ph="{...}" />
             <marker date="1517067576984" expanded="true" signature="8093:8917" ph="{...}" />
             <marker date="1517067576984" expanded="true" signature="8199:8891" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/BufferWriter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/BufferReader.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="3" column="13" lean-forward="false" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/BufferReader.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="37" column="22" lean-forward="false" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
+          <folding>
+            <marker date="1520070243389" expanded="false" signature="6:32" ph="..." />
+            <marker date="1520070243389" expanded="true" signature="68:3359" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="114:3357" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="173:325" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="189:235" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="245:319" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="348:421" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="364:415" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="505:549" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="573:732" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="759:808" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="834:1023" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="1051:1244" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="1268:1455" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="1481:1672" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="1697:1885" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="1912:2104" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="2128:2321" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="2349:2538" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="2564:2759" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="2796:3095" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="3123:3286" ph="{...}" />
+            <marker date="1520070243389" expanded="true" signature="3313:3353" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Functions/BufferWriter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1991">
+          <caret line="129" column="11" lean-forward="false" selection-start-line="129" selection-start-column="11" selection-end-line="129" selection-end-column="11" />
+          <folding>
+            <marker date="1520070243402" expanded="true" signature="6:49" ph="..." />
+            <marker date="1520070243402" expanded="true" signature="85:3075" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="129:3073" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="221:453" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="291:447" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="476:529" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="600:632" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="657:721" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="753:830" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="865:921" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="955:1110" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="1146:1301" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="1333:1488" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="1522:1677" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="1710:1865" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="1900:2055" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="2087:2242" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="2278:2433" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="2467:2622" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="2657:2757" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="2793:2992" ph="{...}" />
+            <marker date="1520070243402" expanded="true" signature="3019:3069" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/Manager.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="98" column="56" lean-forward="false" selection-start-line="98" selection-start-column="56" selection-end-line="98" selection-end-column="56" />
+          <folding>
+            <marker date="1520078096170" expanded="true" signature="6:121" ph="..." />
+            <marker date="1520078096170" expanded="true" signature="156:9288" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="183:9286" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="214:417" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="569:843" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="641:833" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="910:4212" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="1120:4202" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="1311:4025" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="1390:4007" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="4356:4927" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="4625:4871" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="5067:9280" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="5246:9052" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="5380:9038" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="5768:8982" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="5997:8960" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="6092:8934" ph="{...}" />
+            <marker date="1520078096170" expanded="true" signature="9085:9245" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Database/IDatabaseObject.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="6" column="5" lean-forward="false" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+          <folding>
+            <marker date="1520078096151" expanded="true" signature="6:58" ph="..." />
+            <marker date="1520078096151" expanded="true" signature="93:178" ph="{...}" />
+            <marker date="1520078096151" expanded="true" signature="132:176" ph="{...}" />
           </folding>
         </state>
       </provider>

@@ -6,9 +6,15 @@
       <e p="bin" t="ExcludeRecursive" />
       <e p="CommandLine.cs" t="Include" />
       <e p="ConsoleSystem.cs" t="Include" />
+      <e p="Database" t="Include">
+        <e p="IDatabaseObject.cs" t="Include" />
+        <e p="Manager.cs" t="Include" />
+      </e>
       <e p="Framework.cs" t="Include" />
       <e p="FrameworkWorker.cs" t="Include" />
       <e p="Functions" t="Include">
+        <e p="BufferReader.cs" t="Include" />
+        <e p="BufferWriter.cs" t="Include" />
         <e p="HTTP.cs" t="Include" />
         <e p="IPAddres.cs" t="Include" />
         <e p="TimeDebugger.cs" t="Include" />
