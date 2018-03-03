@@ -8,6 +8,7 @@ namespace SapphireEngine.Database
 {
     public class Manager
     {
+        #region [Define]
         static Manager()
         {
             if (Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/Database"))
@@ -15,20 +16,24 @@ namespace SapphireEngine.Database
         }
 
         private static HashSet<string> ListCheckedPath { get; } = new HashSet<string>();
+        #endregion
 
-        private static void CheckDirectory(string directory)
+        #region [Method] [Method] CheckDirectory
+        private static void CheckDirectory(string _directory)
         {
-            if (ListCheckedPath.Contains(directory) == false)
+            if (ListCheckedPath.Contains(_directory) == false)
             {
-                ListCheckedPath.Add(directory);
-                if (Directory.Exists(directory) == false)
-                    Directory.CreateDirectory(directory);
+                ListCheckedPath.Add(_directory);
+                if (Directory.Exists(_directory) == false)
+                    Directory.CreateDirectory(_directory);
             }
         }
-        
-        public static void Save(IDatabaseObject database)
+        #endregion
+
+        #region [Method] [Method] Save
+        public static void Save(IDatabaseObject _database)
         {
-            Type type = database.GetType();
+            Type type = _database.GetType();
             CheckDirectory(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name);
 
             using (BufferWriter writer = new BufferWriter())
@@ -39,84 +44,90 @@ namespace SapphireEngine.Database
                     switch (propertyes[i].PropertyType.Name)
                     {
                         case "String":
-                            writer.String((String)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.String((String)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Char":
-                            writer.Char((Char)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Char((Char)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Double":
-                            writer.Double((Double)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Double((Double)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Boolean":
-                            writer.Boolean((Boolean)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Boolean((Boolean)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Byte":
-                            writer.Byte((Byte)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Byte((Byte)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Single":
-                            writer.Float((Single)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Float((Single)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Byte[]":
-                            Byte[] buffer = (Byte[]) propertyes[i].GetGetMethod(true).Invoke(database, new object[0]);
+                            Byte[] buffer = (Byte[]) propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]);
                             writer.Int32(buffer.Length);
                             writer.Bytes(buffer);
                             break;
                         case "Int16":
-                            writer.Int16((Int16)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Int16((Int16)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Int32":
-                            writer.Int32((Int32)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Int32((Int32)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "Int64":
-                            writer.Int64((Int64)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.Int64((Int64)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "UInt16":
-                            writer.UInt16((UInt16)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.UInt16((UInt16)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "UInt32":
-                            writer.UInt32((UInt32)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.UInt32((UInt32)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                         case "UInt64":
-                            writer.UInt64((UInt64)propertyes[i].GetGetMethod(true).Invoke(database, new object[0]));
+                            writer.UInt64((UInt64)propertyes[i].GetGetMethod(true).Invoke(_database, new object[0]));
                             break;
                     }
                 }
                 
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name + "/" + database.ID + ".sdb", writer.Buffer);
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name + "/" + _database.ID + ".sdb", writer.Buffer);
             }
         }
+        #endregion
+
+        #region [Method] [Method] LoadAll
         
         public static T[] LoadAll<T>() => (T[])(object)LoadAll(typeof(T));
 
-        public static IDatabaseObject[] LoadAll(Type type)
+        public static IDatabaseObject[] LoadAll(Type _type)
         {
             List<IDatabaseObject> databaseObjects = new List<IDatabaseObject>();
-            FileInfo[] files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name).GetFiles();
+            FileInfo[] files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + _type.Name).GetFiles();
             for (var i = 0; i < files.Length; ++i)
             {
-                IDatabaseObject databaseObject = Load(type, files[i].Name.Substring(0, files[i].Name.IndexOf('.')));
+                IDatabaseObject databaseObject = Load(_type, files[i].Name.Substring(0, files[i].Name.IndexOf('.')));
                 if (databaseObject != null)
                     databaseObjects.Add(databaseObject);
             }
             return databaseObjects.ToArray();
         }
+        
+        #endregion
 
-        public static T Load<T>(string uid) => (T)Load(typeof(T), uid);
+        #region [Method] [Example] Load
+        public static T Load<T>(string _uid) => (T)Load(typeof(T), _uid);
 
-        public static IDatabaseObject Load(Type type, string uid)
+        public static IDatabaseObject Load(Type _type, string _uid)
         {
             IDatabaseObject database = null;
             
-            CheckDirectory(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name);
+            CheckDirectory(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + _type.Name);
 
             try
             {
-                if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name + "/" + uid + ".sdb"))
+                if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + _type.Name + "/" + _uid + ".sdb"))
                 {
-                    database = (IDatabaseObject) type.Assembly.CreateInstance(type.FullName);
-                    database.ID = uid;
+                    database = (IDatabaseObject) _type.Assembly.CreateInstance(_type.FullName);
+                    database.ID = _uid;
 
-                    byte[] buffer_database = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name + "/" + uid + ".sdb");
+                    byte[] buffer_database = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + _type.Name + "/" + _uid + ".sdb");
 
                     using (BufferReader reader = new BufferReader(buffer_database))
                     {
@@ -174,9 +185,10 @@ namespace SapphireEngine.Database
             }
             catch (Exception ex)
             {
-                ConsoleSystem.LogError($"[Database.Manager]: Exception from load {type.Name} id {uid} database: " + ex.Message);   
+                ConsoleSystem.LogError($"[Database.Manager]: Exception from load {_type.Name} id {_uid} database: " + ex.Message);   
             }
             return null;
         }
+        #endregion
     }
 }
