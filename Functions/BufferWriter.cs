@@ -10,7 +10,7 @@ namespace SapphireEngine.Functions
 
     public byte[] Buffer
     {
-      get { return this.m_memoryStream.GetBuffer(); }
+      get { return this.m_memoryStream.ToArray(); }
       set
       {
         this.m_memoryStream.SetLength(0L);

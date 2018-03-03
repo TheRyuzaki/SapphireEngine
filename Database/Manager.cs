@@ -16,9 +16,10 @@ namespace SapphireEngine.Database
         }
 
         private static HashSet<string> ListCheckedPath { get; } = new HashSet<string>();
+        private static Dictionary<Type, uint> ListLastUID = new Dictionary<Type, uint>();
         #endregion
 
-        #region [Method] [Method] CheckDirectory
+        #region [Method] [Static] CheckDirectory
         private static void CheckDirectory(string _directory)
         {
             if (ListCheckedPath.Contains(_directory) == false)
@@ -30,7 +31,7 @@ namespace SapphireEngine.Database
         }
         #endregion
 
-        #region [Method] [Method] Save
+        #region [Method] [Static] Save
         public static void Save(IDatabaseObject _database)
         {
             Type type = _database.GetType();
@@ -38,7 +39,7 @@ namespace SapphireEngine.Database
 
             using (BufferWriter writer = new BufferWriter())
             {
-                PropertyInfo[] propertyes = type.GetProperties(BindingFlags.CreateInstance | BindingFlags.Instance);
+                PropertyInfo[] propertyes = type.GetProperties();
                 for (int i = 0; i < propertyes.Length; ++i)
                 {
                     switch (propertyes[i].PropertyType.Name)
@@ -92,9 +93,28 @@ namespace SapphireEngine.Database
         }
         #endregion
 
-        #region [Method] [Method] LoadAll
-        
-        public static T[] LoadAll<T>() => (T[])(object)LoadAll(typeof(T));
+        #region [Method] [Static] LoadAll
+
+        public static T[] LoadAll<T>()
+        {
+            Type type = typeof(T);
+            List<T> databaseObjects = new List<T>();
+            FileInfo[] files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + type.Name).GetFiles();
+            for (var i = 0; i < files.Length; ++i)
+            {
+                try
+                {
+                    T databaseObject = Load<T>(uint.Parse(files[i].Name.Substring(0, files[i].Name.IndexOf('.'))));
+                    if (databaseObject != null)
+                        databaseObjects.Add(databaseObject);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"[Database.Manager]: Exception from load {type.Name} file {files[i].Name}: " + ex.Message);   
+                }
+            }
+            return databaseObjects.ToArray();
+        }
 
         public static IDatabaseObject[] LoadAll(Type _type)
         {
@@ -102,19 +122,26 @@ namespace SapphireEngine.Database
             FileInfo[] files = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + _type.Name).GetFiles();
             for (var i = 0; i < files.Length; ++i)
             {
-                IDatabaseObject databaseObject = Load(_type, files[i].Name.Substring(0, files[i].Name.IndexOf('.')));
-                if (databaseObject != null)
-                    databaseObjects.Add(databaseObject);
+                try
+                {
+                    IDatabaseObject databaseObject = Load(_type, uint.Parse(files[i].Name.Substring(0, files[i].Name.IndexOf('.'))));
+                    if (databaseObject != null)
+                        databaseObjects.Add(databaseObject);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleSystem.LogError($"[Database.Manager]: Exception from load {_type.Name} file {files[i].Name}: " + ex.Message);   
+                }
             }
             return databaseObjects.ToArray();
         }
         
         #endregion
 
-        #region [Method] [Example] Load
-        public static T Load<T>(string _uid) => (T)Load(typeof(T), _uid);
+        #region [Method] [Static] Load
+        public static T Load<T>(uint _uid) => (T)(object)Load(typeof(T), _uid);
 
-        public static IDatabaseObject Load(Type _type, string _uid)
+        public static IDatabaseObject Load(Type _type, uint _uid)
         {
             IDatabaseObject database = null;
             
@@ -124,6 +151,9 @@ namespace SapphireEngine.Database
             {
                 if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "/Database/" + _type.Name + "/" + _uid + ".sdb"))
                 {
+                    if (ListLastUID.ContainsKey(_type) == false || _uid > ListLastUID[_type])
+                        ListLastUID[_type] = _uid;
+                    
                     database = (IDatabaseObject) _type.Assembly.CreateInstance(_type.FullName);
                     database.ID = _uid;
 
@@ -131,7 +161,7 @@ namespace SapphireEngine.Database
 
                     using (BufferReader reader = new BufferReader(buffer_database))
                     {
-                        PropertyInfo[] propertyes = database.GetType().GetProperties(BindingFlags.CreateInstance | BindingFlags.Instance);
+                        PropertyInfo[] propertyes = database.GetType().GetProperties();
                         for (int i = 0; i < propertyes.Length; ++i)
                         {
                             switch (propertyes[i].PropertyType.Name)
@@ -188,6 +218,22 @@ namespace SapphireEngine.Database
                 ConsoleSystem.LogError($"[Database.Manager]: Exception from load {_type.Name} id {_uid} database: " + ex.Message);   
             }
             return null;
+        }
+        #endregion
+
+        #region [Method] [Static] Create
+        public static T Create<T>() => (T)Create(typeof(T));
+
+        public static IDatabaseObject Create(Type _type)
+        {
+            IDatabaseObject database = (IDatabaseObject) _type.Assembly.CreateInstance(_type.FullName);
+            
+            if (ListLastUID.ContainsKey(_type) == false)
+                ListLastUID[_type] = 0;
+            
+            database.ID = ++ListLastUID[_type];
+                
+            return database;
         }
         #endregion
     }

@@ -5,6 +5,6 @@ namespace SapphireEngine.Database
 {
     public interface IDatabaseObject
     {
-        string ID { get; set; }
+        uint ID { get;  set; }
     }
 }
