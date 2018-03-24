@@ -14,3 +14,5 @@ C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\Te
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.dll
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.pdb
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\UnityEngine.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csproj.CoreCompileInputs.cache
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csproj.CopyComplete
