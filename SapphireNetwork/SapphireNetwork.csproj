@@ -47,6 +47,7 @@
     <Compile Include="NetworkClient.cs" />
     <Compile Include="NetworkConfiguration.cs" />
     <Compile Include="NetworkConnection.cs" />
+    <Compile Include="NetworkFragmentPacket.cs" />
     <Compile Include="NetworkPeer.cs" />
     <Compile Include="NetworkReader.cs" />
     <Compile Include="NetworkReceivedPacket.cs" />

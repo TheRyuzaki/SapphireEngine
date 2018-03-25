@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -47,27 +48,27 @@ namespace SapphireNetwork
 
             if (this.m_memoryStream.Length > 64000)
             {
-                byte[] bufferLenBytes = BitConverter.GetBytes((uint) this.m_memoryStream.Length);
-                byte[] bufferStartFragmentPacket = new byte[]{ 251, 251, 251, 251, bufferLenBytes[0], bufferLenBytes[1], bufferLenBytes[2], bufferLenBytes[3] };
+                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
+                
+                byte[] bufferPacketId = BitConverter.GetBytes(bufferFullFragment.GetHashCode());
+                byte[] bufferLenBytes = BitConverter.GetBytes((uint) bufferFullFragment.Length);
+                
+                byte[] bufferStartFragmentPacket = new byte[]{ 251, 251, 251, 251, bufferPacketId[0], bufferPacketId[1], bufferPacketId[2], bufferPacketId[3], bufferLenBytes[0], bufferLenBytes[1], bufferLenBytes[2], bufferLenBytes[3] };
                 
                 for (int i = 0; i < connections.Count; ++i)
                     this.Peer.BaseSocket.Client.SendTo(bufferStartFragmentPacket, connections[i].Addres);
                 
-                int fragment_count = (int) Math.Ceiling((double) this.m_memoryStream.Length / 64000);
+                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 64000);
+
                 for (int i = 0; i < fragment_count; i++)
                 {
-                    byte[] fragment = new byte[this.m_memoryStream.Length - (i * 64000)];
-                    this.m_memoryStream.Read(fragment, i * 64000, ((int)this.m_memoryStream.Length - (i * 64000)));
+                    byte[] indexFragment = BitConverter.GetBytes(i);
+                    byte[] fragment = bufferFullFragment.Skip(i * 64000).Take(64000).ToArray();
+                    fragment = (new byte[] {250, 250, 250, 250, bufferPacketId[0], bufferPacketId[1], bufferPacketId[2], bufferPacketId[3], indexFragment[0], indexFragment[1], indexFragment[2], indexFragment[3]}).Concat(fragment).ToArray();
                     
                     for (int j = 0; j < connections.Count; ++j)
                         this.Peer.BaseSocket.Client.SendTo(fragment, connections[j].Addres);
                 }
-                
-                byte[] bufferEndFragmentPacket = new byte[]{ 250, 250, 250, 250 };
-                
-                for (int j = 0; j < connections.Count; ++j)
-                    this.Peer.BaseSocket.Client.SendTo(bufferEndFragmentPacket, connections[j].Addres);
-                
                 return;
             }
             
@@ -82,24 +83,24 @@ namespace SapphireNetwork
             
             if (this.m_memoryStream.Length > 64000)
             {
-                byte[] bufferLenBytes = BitConverter.GetBytes((uint) this.m_memoryStream.Length);
-                byte[] bufferStartFragmentPacket = new byte[]{ 251, 251, 251, 251, bufferLenBytes[0], bufferLenBytes[1], bufferLenBytes[2], bufferLenBytes[3] };
+                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
+                
+                byte[] bufferPacketId = BitConverter.GetBytes(bufferFullFragment.GetHashCode());
+                byte[] bufferLenBytes = BitConverter.GetBytes((uint) bufferFullFragment.Length);
+                
+                byte[] bufferStartFragmentPacket = new byte[]{ 251, 251, 251, 251, bufferPacketId[0], bufferPacketId[1], bufferPacketId[2], bufferPacketId[3], bufferLenBytes[0], bufferLenBytes[1], bufferLenBytes[2], bufferLenBytes[3] };
                 
                 this.Peer.BaseSocket.Client.SendTo(bufferStartFragmentPacket, connection.Addres);
                 
-                int fragment_count = (int) Math.Ceiling((double) this.m_memoryStream.Length / 64000);
+                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 64000);
+
                 for (int i = 0; i < fragment_count; i++)
                 {
-                    byte[] fragment = new byte[this.m_memoryStream.Length - (i * 64000)];
-                    this.m_memoryStream.Read(fragment, i * 64000, ((int)this.m_memoryStream.Length - (i * 64000)));
-                    
+                    byte[] indexFragment = BitConverter.GetBytes(i);
+                    byte[] fragment = bufferFullFragment.Skip(i * 64000).Take(64000).ToArray();
+                    fragment = (new byte[] {250, 250, 250, 250, bufferPacketId[0], bufferPacketId[1], bufferPacketId[2], bufferPacketId[3], indexFragment[0], indexFragment[1], indexFragment[2], indexFragment[3]}).Concat(fragment).ToArray();
                     this.Peer.BaseSocket.Client.SendTo(fragment, connection.Addres);
                 }
-                
-                byte[] bufferEndFragmentPacket = new byte[]{ 250, 250, 250, 250 };
-                
-                this.Peer.BaseSocket.Client.SendTo(bufferEndFragmentPacket, connection.Addres);
-                
                 return;
             }
             
@@ -113,27 +114,27 @@ namespace SapphireNetwork
 
             if (this.m_memoryStream.Length > 64000)
             {
-                byte[] bufferLenBytes = BitConverter.GetBytes((uint) this.m_memoryStream.Length);
-                byte[] bufferStartFragmentPacket = new byte[] {251, 251, 251, 251, bufferLenBytes[0], bufferLenBytes[1], bufferLenBytes[2], bufferLenBytes[3]};
-
+                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
+                
+                byte[] bufferPacketId = BitConverter.GetBytes(bufferFullFragment.GetHashCode());
+                byte[] bufferLenBytes = BitConverter.GetBytes((uint) bufferFullFragment.Length);
+                
+                byte[] bufferStartFragmentPacket = new byte[]{ 251, 251, 251, 251, bufferPacketId[0], bufferPacketId[1], bufferPacketId[2], bufferPacketId[3], bufferLenBytes[0], bufferLenBytes[1], bufferLenBytes[2], bufferLenBytes[3] };
+                
                 foreach (var connection in this.Peer.m_listconnections)
                     this.Peer.BaseSocket.Client.SendTo(bufferStartFragmentPacket, connection.Key);
+                
+                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 64000);
 
-                int fragment_count = (int) Math.Ceiling((double) this.m_memoryStream.Length / 64000);
                 for (int i = 0; i < fragment_count; i++)
                 {
-                    byte[] fragment = new byte[this.m_memoryStream.Length - (i * 64000)];
-                    this.m_memoryStream.Read(fragment, i * 64000, ((int) this.m_memoryStream.Length - (i * 64000)));
-
+                    byte[] indexFragment = BitConverter.GetBytes(i);
+                    byte[] fragment = bufferFullFragment.Skip(i * 64000).Take(64000).ToArray();
+                    fragment = (new byte[] {250, 250, 250, 250, bufferPacketId[0], bufferPacketId[1], bufferPacketId[2], bufferPacketId[3], indexFragment[0], indexFragment[1], indexFragment[2], indexFragment[3]}).Concat(fragment).ToArray();
+                    
                     foreach (var connection in this.Peer.m_listconnections)
                         this.Peer.BaseSocket.Client.SendTo(fragment, connection.Key);
                 }
-
-                byte[] bufferEndFragmentPacket = new byte[] {250, 250, 250, 250};
-
-                foreach (var connection in this.Peer.m_listconnections)
-                    this.Peer.BaseSocket.Client.SendTo(bufferEndFragmentPacket, connection.Key);
-
                 return;
             }
 

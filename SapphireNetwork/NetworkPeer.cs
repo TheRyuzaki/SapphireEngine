@@ -25,7 +25,9 @@ namespace SapphireNetwork
         public Queue<NetworkReceivedPacket> ListStackPackets = new Queue<NetworkReceivedPacket>();
         internal Dictionary<IPEndPoint,NetworkConnection> m_listconnections = new Dictionary<IPEndPoint,NetworkConnection>();
         internal Dictionary<NetworkConnection, string> m_listdisconnected = new Dictionary<NetworkConnection, string>();
-        internal Dictionary<IPEndPoint, MemoryStream> m_listfragments = new Dictionary<IPEndPoint, MemoryStream>();
+        
+        internal Dictionary<int, NetworkFragmentPacket> m_listfragments = new Dictionary<int, NetworkFragmentPacket>();
+        internal Dictionary<IPEndPoint, List<NetworkFragmentPacket>> m_listfragmentsPerConnection = new Dictionary<IPEndPoint, List<NetworkFragmentPacket>>();
         
         public NetworkPeer(NetworkConfiguration configuration)
         {
@@ -47,13 +49,59 @@ namespace SapphireNetwork
                     if (this.Status && this.BaseSocket != null)
                     {
                         buffer = this.BaseSocket.Receive(ref endpointLastsender);
-                        ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = buffer, Addres = (IPEndPoint) endpointLastsender});
+                        if (this.OnReceivingFragment(buffer, endpointLastsender))
+                            continue;
+                        ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = buffer, Addres = endpointLastsender});
                     }
                     else
                         Thread.Sleep(10);
                 }
                 catch { }
             }
+        }
+
+        private bool OnReceivingFragment(byte[] buffer, IPEndPoint endpointLastsender)
+        {
+            switch (buffer[0])
+            {
+                case 251:
+                    if (buffer.Length == 12 && buffer[1] == 251 && buffer[2] == 251 && buffer[3] == 251)
+                    {
+                        int packetId = BitConverter.ToInt32(buffer, 4);
+                        uint totalSize = BitConverter.ToUInt32(buffer, 8);
+                        
+                        this.m_listfragments[packetId] = new NetworkFragmentPacket(totalSize, packetId);
+                        
+                        if (this.m_listfragmentsPerConnection.ContainsKey(endpointLastsender) == false)
+                            this.m_listfragmentsPerConnection[endpointLastsender] = new List<NetworkFragmentPacket>();
+                        
+                        this.m_listfragmentsPerConnection[endpointLastsender].Add(this.m_listfragments[packetId]);
+                        return true;
+                    }
+                    break;
+                case 250:
+                    if (buffer.Length > 12 && buffer[1] == 250 && buffer[2] == 250 && buffer[3] == 250)
+                    {
+                        int packetId = BitConverter.ToInt32(buffer, 4);
+                        int indexFragment = BitConverter.ToInt32(buffer, 8);
+                        if (this.m_listfragments.TryGetValue(packetId, out NetworkFragmentPacket fragmentPacket))
+                        {
+                            fragmentPacket.WriteFragment(buffer.Skip(12).ToArray(), indexFragment);
+                            if (fragmentPacket.TotalBufferSize == fragmentPacket.CurentBufferSize)
+                            {
+                                ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = fragmentPacket.Buffer, Addres = endpointLastsender});
+                                this.m_listfragments.Remove(fragmentPacket.PacketID);
+                                if (this.m_listfragmentsPerConnection.ContainsKey(endpointLastsender) && this.m_listfragmentsPerConnection[endpointLastsender].Contains(fragmentPacket))
+                                    this.m_listfragmentsPerConnection[endpointLastsender].Remove(fragmentPacket);
+                                fragmentPacket.Dispose();
+                            }
+                        }
+
+                        return true;
+                    }           
+                    break;
+            }
+            return false;
         }
 
         internal void KickConnection(NetworkConnection connection, string reasone)
@@ -145,38 +193,6 @@ namespace SapphireNetwork
                                 }
 
                                 break;
-                            case 251:
-                                if (packet.Buffer[1] == 251 && packet.Buffer.Length > 3 && packet.Buffer[2] == 251 && packet.Buffer[3] == 251 && packet.Buffer.Length == 8)
-                                {
-                                    if (this.m_listfragments.ContainsKey(packet.Addres))
-                                        this.m_listfragments[packet.Addres].SetLength(0);
-                                    else
-                                        this.m_listfragments[packet.Addres] = new MemoryStream();
-
-                                    uint len = BitConverter.ToUInt32(packet.Buffer, 4);
-                                    this.m_listfragments[packet.Addres].Capacity = (int) len;
-                                    continue;
-                                }
-
-                                break;
-                            case 250:
-                                if (packet.Buffer[1] == 250 && packet.Buffer.Length > 3 && packet.Buffer[2] == 250 && packet.Buffer[3] == 250 && packet.Buffer.Length == 4)
-                                {
-                                    if (this.m_listfragments.ContainsKey(packet.Addres))
-                                    {
-                                        packet.Buffer = this.m_listfragments[packet.Addres].ToArray();
-                                        this.m_listfragments[packet.Addres].Dispose();
-                                        this.m_listfragments.Remove(packet.Addres);
-                                    }
-                                    continue;
-                                }
-                                break;
-                        }
-
-                        if (this.m_listfragments.ContainsKey(packet.Addres))
-                        {
-                            this.m_listfragments[packet.Addres].Write(packet.Buffer, 0, packet.Buffer.Length);
-                            continue;
                         }
 
                         if (this.Configuration.Cryptor != null)
@@ -219,6 +235,22 @@ namespace SapphireNetwork
                                 disconnectBytes.AddRange(Encoding.ASCII.GetBytes(connection.Value));
                                 
                                 this.BaseSocket.Client.SendTo(disconnectBytes.ToArray(), connection.Key.Addres);
+
+                                if (this.m_listfragmentsPerConnection.TryGetValue(connection.Key.Addres, out var list))
+                                {
+                                    for (var i = 0; i < list.Count; i++)
+                                    {
+                                        if (this.m_listfragments.ContainsKey(list[i].PacketID))
+                                        {
+                                            this.m_listfragments.Remove(list[i].PacketID);
+                                            list[i].Dispose();
+                                        }
+                                    }
+
+                                    list.Clear();
+                                    this.m_listfragmentsPerConnection.Remove(connection.Key.Addres);
+                                }
+                                
                                 OnDisconnected?.Invoke(connection.Key, connection.Value);
                             }
                         }

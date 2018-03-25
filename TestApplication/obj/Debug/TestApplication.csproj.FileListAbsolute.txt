@@ -8,11 +8,11 @@ C:\Users\TheRyuzaki\RiderProjects\SapphireEngineVersion2\TestApplication\obj\Deb
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\TestApplication.exe
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\TestApplication.pdb
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireEngine.dll
-C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csprojResolveAssemblyReference.cache
-C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.exe
-C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.pdb
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.dll
-C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.pdb
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\UnityEngine.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\SapphireNetwork.pdb
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csprojResolveAssemblyReference.cache
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csproj.CoreCompileInputs.cache
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csproj.CopyComplete
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.exe
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.pdb
