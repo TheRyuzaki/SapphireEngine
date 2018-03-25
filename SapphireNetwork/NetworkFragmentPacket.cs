@@ -26,7 +26,7 @@ namespace SapphireNetwork
                 return;
             }
             
-            uint offset = (uint)indexFragment * 1000;
+            uint offset = (uint)indexFragment * 1450;
             for (uint i = 0; i < buffer.Length; ++i)
                 Buffer[offset + i] = buffer[i];
         }
