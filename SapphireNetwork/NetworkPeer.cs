@@ -26,8 +26,7 @@ namespace SapphireNetwork
         internal Dictionary<IPEndPoint,NetworkConnection> m_listconnections = new Dictionary<IPEndPoint,NetworkConnection>();
         internal Dictionary<NetworkConnection, string> m_listdisconnected = new Dictionary<NetworkConnection, string>();
         
-        internal Dictionary<int, NetworkFragmentPacket> m_listfragments = new Dictionary<int, NetworkFragmentPacket>();
-        internal Dictionary<IPEndPoint, List<NetworkFragmentPacket>> m_listfragmentsPerConnection = new Dictionary<IPEndPoint, List<NetworkFragmentPacket>>();
+        internal Dictionary<IPEndPoint, MemoryStream> m_listfragmentsPerConnection = new Dictionary<IPEndPoint, MemoryStream>();
         
         public NetworkPeer(NetworkConfiguration configuration)
         {
@@ -62,45 +61,25 @@ namespace SapphireNetwork
 
         private bool OnReceivingFragment(byte[] buffer, IPEndPoint endpointLastsender)
         {
-            switch (buffer[0])
+            if (buffer.Length > 4 && buffer[0] == 250 && buffer[1] == 250 && buffer[2] == 250 && buffer[3] == 250)
             {
-                case 251:
-                    if (buffer.Length == 12 && buffer[1] == 251 && buffer[2] == 251 && buffer[3] == 251)
-                    {
-                        int packetId = BitConverter.ToInt32(buffer, 4);
-                        uint totalSize = BitConverter.ToUInt32(buffer, 8);
-                        
-                        this.m_listfragments[packetId] = new NetworkFragmentPacket(totalSize, packetId);
-                        
-                        if (this.m_listfragmentsPerConnection.ContainsKey(endpointLastsender) == false)
-                            this.m_listfragmentsPerConnection[endpointLastsender] = new List<NetworkFragmentPacket>();
-                        
-                        this.m_listfragmentsPerConnection[endpointLastsender].Add(this.m_listfragments[packetId]);
-                        return true;
-                    }
-                    break;
-                case 250:
-                    if (buffer.Length > 12 && buffer[1] == 250 && buffer[2] == 250 && buffer[3] == 250)
-                    {
-                        int packetId = BitConverter.ToInt32(buffer, 4);
-                        int indexFragment = BitConverter.ToInt32(buffer, 8);
-                        if (this.m_listfragments.TryGetValue(packetId, out NetworkFragmentPacket fragmentPacket))
-                        {
-                            fragmentPacket.WriteFragment(buffer.Skip(12).ToArray(), indexFragment);
-                            if (fragmentPacket.TotalBufferSize == fragmentPacket.CurentBufferSize)
-                            {
-                                ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = fragmentPacket.Buffer, Addres = endpointLastsender});
-                                this.m_listfragments.Remove(fragmentPacket.PacketID);
-                                if (this.m_listfragmentsPerConnection.ContainsKey(endpointLastsender) && this.m_listfragmentsPerConnection[endpointLastsender].Contains(fragmentPacket))
-                                    this.m_listfragmentsPerConnection[endpointLastsender].Remove(fragmentPacket);
-                                fragmentPacket.Dispose();
-                            }
-                        }
-
-                        return true;
-                    }           
-                    break;
+                MemoryStream bufferStream;
+                if (this.m_listfragmentsPerConnection.TryGetValue(endpointLastsender, out bufferStream) == false)
+                {
+                    bufferStream = new MemoryStream();
+                    this.m_listfragmentsPerConnection[endpointLastsender] = bufferStream;
+                }
+                bufferStream.Write(buffer, 4, buffer.Length - 4);
+                return true;
             }
+
+            if (this.m_listfragmentsPerConnection.TryGetValue(endpointLastsender, out MemoryStream ms))
+            {
+                ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = ms.ToArray(), Addres = endpointLastsender});
+                ms.Dispose();
+                this.m_listfragmentsPerConnection.Remove(endpointLastsender);
+            }
+            
             return false;
         }
 
@@ -236,18 +215,9 @@ namespace SapphireNetwork
                                 
                                 this.BaseSocket.Client.SendTo(disconnectBytes.ToArray(), connection.Key.Addres);
 
-                                if (this.m_listfragmentsPerConnection.TryGetValue(connection.Key.Addres, out var list))
+                                if (this.m_listfragmentsPerConnection.TryGetValue(connection.Key.Addres, out var ms))
                                 {
-                                    for (var i = 0; i < list.Count; i++)
-                                    {
-                                        if (this.m_listfragments.ContainsKey(list[i].PacketID))
-                                        {
-                                            this.m_listfragments.Remove(list[i].PacketID);
-                                            list[i].Dispose();
-                                        }
-                                    }
-
-                                    list.Clear();
+                                    ms.Dispose();
                                     this.m_listfragmentsPerConnection.Remove(connection.Key.Addres);
                                 }
                                 
