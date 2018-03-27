@@ -35,7 +35,6 @@
         <e p="NetworkClient.cs" t="Include" />
         <e p="NetworkConfiguration.cs" t="Include" />
         <e p="NetworkConnection.cs" t="Include" />
-        <e p="NetworkFragmentPacket.cs" t="Include" />
         <e p="NetworkPeer.cs" t="Include" />
         <e p="NetworkReader.cs" t="Include" />
         <e p="NetworkReceivedPacket.cs" t="Include" />
