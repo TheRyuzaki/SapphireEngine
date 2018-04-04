@@ -75,7 +75,8 @@ namespace SapphireNetwork
 
             if (this.m_listfragmentsPerConnection.TryGetValue(endpointLastsender, out MemoryStream ms))
             {
-                ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = ms.ToArray(), Addres = endpointLastsender});
+                byte[] bufferEnd = ms.ToArray();
+                ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = bufferEnd, Addres = endpointLastsender});
                 ms.Dispose();
                 this.m_listfragmentsPerConnection.Remove(endpointLastsender);
             }

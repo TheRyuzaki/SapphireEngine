@@ -46,16 +46,16 @@ namespace SapphireNetwork
             if (this.Peer.Configuration.Cryptor != null)
                 this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
 
-            if (this.m_memoryStream.Length > 1450)
+            if (this.m_memoryStream.Length > 512)
             {
                 byte[] bufferFullFragment = this.m_memoryStream.ToArray();
                 
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 1450);
+                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 512);
 
                 for (int j = 0; j < fragment_count; j++)
                 {
-                    int offset = j * 1450;
-                    byte[] preFragment = ((j +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(1450).ToArray());
+                    int offset = j * 512;
+                    byte[] preFragment = ((j +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(512).ToArray());
                     byte[] fragment = new byte[preFragment.Length + 4];
                     for (var i = 0; i < fragment.Length; i++)
                         fragment[i] = ((i < 4) ? (byte)250 : preFragment[i - 4]);
@@ -75,16 +75,16 @@ namespace SapphireNetwork
             if (this.Peer.Configuration.Cryptor != null)
                 this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
             
-            if (this.m_memoryStream.Length > 1450)
+            if (this.m_memoryStream.Length > 512)
             {
                 byte[] bufferFullFragment = this.m_memoryStream.ToArray();
                 
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 1450);
+                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 512);
 
                 for (int i = 0; i < fragment_count; i++)
                 {
-                    int offset = i * 1450;
-                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(1450).ToArray());
+                    int offset = i * 512;
+                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(512).ToArray());
                     byte[] fragment = new byte[preFragment.Length + 4];
                     for (var j = 0; j < fragment.Length; j++)
                         fragment[j] = ((j < 4) ? (byte)250 : preFragment[j - 4]);
@@ -101,16 +101,16 @@ namespace SapphireNetwork
             if (this.Peer.Configuration.Cryptor != null)
                 this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
 
-            if (this.m_memoryStream.Length > 1450)
+            if (this.m_memoryStream.Length > 512)
             {
                 byte[] bufferFullFragment = this.m_memoryStream.ToArray();
                 
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 1450);
+                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 512);
 
                 for (int i = 0; i < fragment_count; i++)
                 {
-                    int offset = i * 1450;
-                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(1450).ToArray());
+                    int offset = i * 512;
+                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(512).ToArray());
                     byte[] fragment = new byte[preFragment.Length + 4];
                     for (var j = 0; j < fragment.Length; j++)
                         fragment[j] = ((j < 4) ? (byte)250 : preFragment[j - 4]);
