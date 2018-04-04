@@ -37,7 +37,6 @@
         <e p="NetworkConnection.cs" t="Include" />
         <e p="NetworkPeer.cs" t="Include" />
         <e p="NetworkReader.cs" t="Include" />
-        <e p="NetworkReceivedPacket.cs" t="Include" />
         <e p="NetworkServer.cs" t="Include" />
         <e p="NetworkWriter.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />

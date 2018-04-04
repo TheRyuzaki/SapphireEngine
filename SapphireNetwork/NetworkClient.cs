@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using Lidgren.Network;
 
 namespace SapphireNetwork
 {
@@ -16,7 +18,12 @@ namespace SapphireNetwork
         
         public NetworkClient(NetworkConfiguration configuration) : base(configuration)
         {
-            
+            this.BaseSocket = new NetServer(new NetPeerConfiguration(configuration.IndeficationByte.ToString())
+            {
+                AutoFlushSendQueue = true,
+                ConnectionTimeout = configuration.TimeOut
+            });
+            this.BaseSocket.Start();
         }
         
         public bool Connect(string host, int port)
@@ -29,41 +36,23 @@ namespace SapphireNetwork
             try
             {
                 this.ConnectedEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
-                this.BaseSocket = new UdpClient();
-                this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, this.ConnectedEndPoint);
-                this.m_startConnectionTime = (Int32) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                this.m_countFailedTick = 1;
+
+                var netConnection = this.BaseSocket.Connect(this.ConnectedEndPoint);
+                this.m_listconnections[netConnection] = new NetworkConnection(this, netConnection);
+                this.m_listconnections[netConnection].IsConnected = false;
                 this.Status = true;
+                
                 return true;
             }
             catch (Exception exception)
             {
-                this.Status = true;
+                this.Status = false;
                 this.Disconnect();
                 Console.WriteLine($"Connecting to <{host}:{port}> has been failed: " + exception.Message);
             }
             return false;
         }
 
-        public override void Cycle()
-        {
-            base.Cycle();
-            if (this.Status == true && this.m_listconnections.Count == 0)
-            {
-                if ((Int32) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds == this.m_startConnectionTime + this.m_countFailedTick)
-                {
-                    if (this.m_countFailedTick < this.Configuration.TimeOut)
-                    {
-                        this.m_countFailedTick++;
-                        this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, this.ConnectedEndPoint);
-                    }
-                    else
-                    {
-                        this.Disconnect("Time Out!");
-                    }
-                }
-            }
-        }
 
         public bool Disconnect(string reasone = "Disconnected")
         {
@@ -74,17 +63,18 @@ namespace SapphireNetwork
             }
             try
             {
-                if (this.IsConnected)
-                    this.BaseSocket?.Client.SendTo(new byte[] { 254, 254, 254, 254}, this.ConnectedEndPoint);
-                var connection = this.Connection;
+                if (this.IsConnected && this.Connection != null)
+                {
+                    this.Connection.Disconnect(reasone);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        this.Cycle();
+                        Thread.Sleep(100);
+                    }
+                }
+
                 this.Status = false;
-                this.BaseSocket?.Close();
-                this.BaseSocket = null;
-                this.m_startConnectionTime = 0;
-                this.m_countFailedTick = 1;
-                this.ConnectedEndPoint = null;
-                this.m_listconnections.Clear();
-                OnDisconnected?.Invoke(connection, reasone);
+                OnDisconnected?.Invoke(this.Connection, reasone);
                 return true;
             }
             catch (Exception exception)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Lidgren.Network;
 using UnityEngine;
 
 namespace SapphireNetwork
@@ -46,54 +47,30 @@ namespace SapphireNetwork
             if (this.Peer.Configuration.Cryptor != null)
                 this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
 
-            if (this.m_memoryStream.Length > 1450)
-            {
-                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
-                
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 1450);
-
-                for (int j = 0; j < fragment_count; j++)
-                {
-                    int offset = j * 1450;
-                    byte[] preFragment = ((j +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(1450).ToArray());
-                    byte[] fragment = new byte[preFragment.Length + 4];
-                    for (var i = 0; i < fragment.Length; i++)
-                        fragment[i] = ((i < 4) ? (byte)250 : preFragment[i - 4]);
-                    
-                    for (int i = 0; i < connections.Count; ++i)
-                        this.Peer.BaseSocket.Client.SendTo(fragment, connections[i].Addres);
-                }
-                return;
-            }
+            var outMessage = this.Peer.BaseSocket.CreateMessage();
+            outMessage.Write(this.Buffer.Length);
+            outMessage.Write(this.Buffer);
             
             for (int i = 0; i < connections.Count; ++i)
-                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connections[i].Addres);
+                if (connections[i].IsConnected)
+                    this.Peer.BaseSocket.SendMessage(outMessage, connections[i].Addres, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void SendTo(NetworkConnection connection)
         {
+            if (connection.IsConnected == false)
+                return;
+            
             if (this.Peer.Configuration.Cryptor != null)
                 this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
             
-            if (this.m_memoryStream.Length > 1450)
-            {
-                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
-                
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 1450);
-
-                for (int i = 0; i < fragment_count; i++)
-                {
-                    int offset = i * 1450;
-                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(1450).ToArray());
-                    byte[] fragment = new byte[preFragment.Length + 4];
-                    for (var j = 0; j < fragment.Length; j++)
-                        fragment[j] = ((j < 4) ? (byte)250 : preFragment[j - 4]);
-                    this.Peer.BaseSocket.Client.SendTo(fragment, connection.Addres);
-                }
-                return;
-            }
+           
             
-            this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Addres);
+            var outMessage = this.Peer.BaseSocket.CreateMessage();
+            outMessage.Write(this.Buffer.Length);
+            outMessage.Write(this.Buffer);
+            
+            this.Peer.BaseSocket.SendMessage(outMessage, connection.Addres, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void SendToAll()
@@ -101,28 +78,13 @@ namespace SapphireNetwork
             if (this.Peer.Configuration.Cryptor != null)
                 this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
 
-            if (this.m_memoryStream.Length > 1450)
-            {
-                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
-                
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 1450);
-
-                for (int i = 0; i < fragment_count; i++)
-                {
-                    int offset = i * 1450;
-                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(1450).ToArray());
-                    byte[] fragment = new byte[preFragment.Length + 4];
-                    for (var j = 0; j < fragment.Length; j++)
-                        fragment[j] = ((j < 4) ? (byte)250 : preFragment[j - 4]);
-                    
-                    foreach (var connection in this.Peer.m_listconnections)
-                        this.Peer.BaseSocket.Client.SendTo(fragment, connection.Key);
-                }
-                return;
-            }
+            var outMessage = this.Peer.BaseSocket.CreateMessage();
+            outMessage.Write(this.Buffer.Length);
+            outMessage.Write(this.Buffer);
 
             foreach (var connection in this.Peer.m_listconnections)
-                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Key);
+                if (connection.Value.IsConnected)
+                    this.Peer.BaseSocket.SendMessage(outMessage, connection.Key, NetDeliveryMethod.ReliableOrdered);
         }
 
         public void Byte(byte arg)

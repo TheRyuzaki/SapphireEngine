@@ -8,3 +8,4 @@ C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\obj\Debug\Sa
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\bin\x86\Debug\SapphireNetwork.dll
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\bin\x86\Debug\SapphireNetwork.pdb
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\bin\x86\Debug\UnityEngine.dll
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\SapphireNetwork\bin\Debug\Lidgren.Network.dll

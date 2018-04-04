@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Lidgren.Network;
 
 namespace SapphireNetwork
 {
@@ -10,7 +11,7 @@ namespace SapphireNetwork
         public IPEndPoint ListenerEndPoint { get; private set; }
         public bool IsListening => this.Status;
 
-        public Dictionary<IPEndPoint, NetworkConnection> ListConnections => m_listconnections;
+        public Dictionary<NetConnection, NetworkConnection> ListConnections => m_listconnections;
         
         public NetworkServer(NetworkConfiguration configuration) : base(configuration)
         {
@@ -29,8 +30,15 @@ namespace SapphireNetwork
             try
             {
                 this.ListenerEndPoint = new IPEndPoint(IPAddress.Parse(this.Configuration.ServerIP), this.Configuration.ServerPort);
-                this.BaseSocket = new UdpClient(this.ListenerEndPoint);
-                //this.BaseSocket.Client.Bind(this.ListenerEndPoint);
+                this.BaseSocket = new NetServer(new NetPeerConfiguration(this.Configuration.IndeficationByte.ToString())
+                {
+                    AutoFlushSendQueue = true,
+                    MaximumConnections = 9999,
+                    LocalAddress = this.ListenerEndPoint.Address,
+                    Port = this.ListenerEndPoint.Port,
+                    ConnectionTimeout = this.Configuration.TimeOut
+                });
+                this.BaseSocket.Start();
                 this.Status = true;
                 return true;
             }
@@ -57,7 +65,7 @@ namespace SapphireNetwork
             try
             {
                 this.Status = false;
-                this.BaseSocket?.Close();
+                (this.BaseSocket as NetServer).Shutdown("Shutdown");
                 this.ListenerEndPoint = null;
                 this.BaseSocket = null;
                 return true;

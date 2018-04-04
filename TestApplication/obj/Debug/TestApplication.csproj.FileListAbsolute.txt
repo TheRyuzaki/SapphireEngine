@@ -16,3 +16,4 @@ C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\Te
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.csproj.CopyComplete
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.exe
 C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\obj\Debug\TestApplication.pdb
+C:\Users\TheRyuzaki\Documents\GitHub\SapphireEngine\TestApplication\bin\Debug\Lidgren.Network.dll

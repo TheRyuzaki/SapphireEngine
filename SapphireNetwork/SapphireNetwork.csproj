@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>D:\Downloads\lidgren-network-gen3-master\lidgren-network-gen3-master\Lidgren.Network\bin\Release\Lidgren.Network.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -49,7 +52,6 @@
     <Compile Include="NetworkConnection.cs" />
     <Compile Include="NetworkPeer.cs" />
     <Compile Include="NetworkReader.cs" />
-    <Compile Include="NetworkReceivedPacket.cs" />
     <Compile Include="NetworkServer.cs" />
     <Compile Include="NetworkWriter.cs" />
   </ItemGroup>
