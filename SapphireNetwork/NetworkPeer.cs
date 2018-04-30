@@ -27,6 +27,7 @@ namespace SapphireNetwork
         internal Dictionary<NetworkConnection, string> m_listdisconnected = new Dictionary<NetworkConnection, string>();
         
         internal Dictionary<IPEndPoint, MemoryStream> m_listfragmentsPerConnection = new Dictionary<IPEndPoint, MemoryStream>();
+        internal Queue<MemoryStream> m_listPoolMemoryStreams = new Queue<MemoryStream>();
         
         public NetworkPeer(NetworkConfiguration configuration)
         {
@@ -50,7 +51,8 @@ namespace SapphireNetwork
                         buffer = this.BaseSocket.Receive(ref endpointLastsender);
                         if (this.OnReceivingFragment(buffer, endpointLastsender))
                             continue;
-                        ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = buffer, Addres = endpointLastsender});
+                        var packetObject = NetworkReceivedPacket.GetPoolObject(endpointLastsender, buffer);
+                        ListStackPackets.Enqueue(packetObject);
                     }
                     else
                         Thread.Sleep(10);
@@ -66,7 +68,10 @@ namespace SapphireNetwork
                 MemoryStream bufferStream;
                 if (this.m_listfragmentsPerConnection.TryGetValue(endpointLastsender, out bufferStream) == false)
                 {
-                    bufferStream = new MemoryStream();
+                    if (m_listPoolMemoryStreams.Count == 0)
+                        bufferStream = new MemoryStream();
+                    else
+                        bufferStream = m_listPoolMemoryStreams.Dequeue();
                     this.m_listfragmentsPerConnection[endpointLastsender] = bufferStream;
                 }
                 bufferStream.Write(buffer, 4, buffer.Length - 4);
@@ -76,8 +81,9 @@ namespace SapphireNetwork
             if (this.m_listfragmentsPerConnection.TryGetValue(endpointLastsender, out MemoryStream ms))
             {
                 byte[] bufferEnd = ms.ToArray();
-                ListStackPackets.Enqueue(new NetworkReceivedPacket {Buffer = bufferEnd, Addres = endpointLastsender});
-                ms.Dispose();
+                ListStackPackets.Enqueue(NetworkReceivedPacket.GetPoolObject(endpointLastsender, bufferEnd));
+                ms.SetLength(0);
+                m_listPoolMemoryStreams.Enqueue(ms);
                 this.m_listfragmentsPerConnection.Remove(endpointLastsender);
             }
             
@@ -108,10 +114,11 @@ namespace SapphireNetwork
         {
             if (this.Status)
             {
+                NetworkReceivedPacket packet = null;
                 while (this.ListStackPackets.Count != 0)
                 {
-                    NetworkReceivedPacket packet = ListStackPackets.Dequeue();
-
+                    packet = ListStackPackets.Dequeue();
+                    
                     if (packet.Buffer != null && packet.Buffer.Length > 1)
                     {
                         switch (packet.Buffer[0])
@@ -120,6 +127,7 @@ namespace SapphireNetwork
                                 if (packet.Buffer[1] == 255 && packet.Buffer.Length > 3 && packet.Buffer[2] == 255 && packet.Buffer[3] == 255)
                                 {
                                     OnQueryRequest?.Invoke(packet.Addres, packet.Buffer);
+                                    NetworkReceivedPacket.SetPoolObject(packet);
                                     continue;
                                 }
 
@@ -141,6 +149,7 @@ namespace SapphireNetwork
                                         this.KickConnection(connection, reasone);
                                     }
 
+                                    NetworkReceivedPacket.SetPoolObject(packet);
                                     continue;
                                 }
 
@@ -157,6 +166,7 @@ namespace SapphireNetwork
                                         OnConnected?.Invoke(this.m_listconnections[packet.Addres]);
                                     }
 
+                                    NetworkReceivedPacket.SetPoolObject(packet);
                                     continue;
                                 }
 
@@ -169,6 +179,7 @@ namespace SapphireNetwork
                                         connection.OnUpdateResponseTime();
                                     }
 
+                                    NetworkReceivedPacket.SetPoolObject(packet);
                                     continue;
                                 }
 
@@ -184,6 +195,7 @@ namespace SapphireNetwork
                             OnMessage?.Invoke(connection_end);
                         }
                     }
+                    NetworkReceivedPacket.SetPoolObject(packet);
                 }
 
                 if (this.m_listconnections.Count != 0)

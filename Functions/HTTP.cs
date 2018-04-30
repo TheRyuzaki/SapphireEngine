@@ -14,7 +14,7 @@ namespace SapphireEngine.Functions
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                var cbo = new Struct.CallBackObject();
+                var cbo = Struct.CallBackObject.GetPoolObject(null, null);
                 cbo.Result = new WebClient().DownloadString(_url);
                 cbo.CallBack = _callback;
                 if (_callback != null)
@@ -28,7 +28,7 @@ namespace SapphireEngine.Functions
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
-                var cbo = new Struct.CallBackObject();
+                var cbo = Struct.CallBackObject.GetPoolObject(null, null);
                 cbo.Result = new WebClient().UploadString(_url, _queryLine);
                 cbo.CallBack = _callback;
                 if (_callback != null)

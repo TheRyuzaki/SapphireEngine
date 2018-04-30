@@ -47,6 +47,7 @@ namespace SapphireEngine
                         {
                             ConsoleSystem.LogError($"Error to return Object to MainThread <{cbo.Result.GetType()}>: " + ex.Message);
                         }
+                        CallBackObject.SetPoolObject(cbo);
                     }
 
                     if (ListAwakedSapphireTypes.Count > 0)
