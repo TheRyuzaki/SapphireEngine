@@ -24,6 +24,7 @@ namespace TestApplication
         
         public override void OnAwake()
         {
+            ConsoleSystem.ShowCallerInLog = true;
             BaseServer = new NetworkServer(new NetworkConfiguration(0x00) { ServerPort = 10015 });
             BaseServer.OnConnected = connection =>
             {
