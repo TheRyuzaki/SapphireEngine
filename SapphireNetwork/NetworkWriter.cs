@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace SapphireNetwork
 {
@@ -43,86 +42,49 @@ namespace SapphireNetwork
         
         public void Send(List<NetworkConnection> connections)
         {
-            if (this.Peer.Configuration.Cryptor != null)
-                this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
-
-            if (this.m_memoryStream.Length > 512)
-            {
-                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
-                
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 512);
-
-                for (int j = 0; j < fragment_count; j++)
-                {
-                    int offset = j * 512;
-                    byte[] preFragment = ((j +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(512).ToArray());
-                    byte[] fragment = new byte[preFragment.Length + 4];
-                    for (var i = 0; i < fragment.Length; i++)
-                        fragment[i] = ((i < 4) ? (byte)250 : preFragment[i - 4]);
-                    
-                    for (int i = 0; i < connections.Count; ++i)
-                        this.Peer.BaseSocket.Client.SendTo(fragment, connections[i].Addres);
-                }
-                return;
-            }
+            byte[] encryptedByffer = null;
             
             for (int i = 0; i < connections.Count; ++i)
-                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connections[i].Addres);
+            {
+                if (this.Peer.Configuration.Cryptor != null && connections[i].IsEncryption)
+                {
+                    if (encryptedByffer == null)
+                    {
+                        encryptedByffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
+                    }
+                    this.Peer.BaseSocket.Client.SendTo(encryptedByffer, connections[i].Addres);
+                } else
+                    this.Peer.BaseSocket.Client.SendTo(this.Buffer, connections[i].Addres);
+            }
         }
 
         public void SendTo(NetworkConnection connection)
         {
-            if (this.Peer.Configuration.Cryptor != null)
-                this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
-            
-            if (this.m_memoryStream.Length > 512)
+            if (this.Peer.Configuration.Cryptor != null && connection.IsEncryption)
             {
-                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
-                
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 512);
-
-                for (int i = 0; i < fragment_count; i++)
-                {
-                    int offset = i * 512;
-                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(512).ToArray());
-                    byte[] fragment = new byte[preFragment.Length + 4];
-                    for (var j = 0; j < fragment.Length; j++)
-                        fragment[j] = ((j < 4) ? (byte)250 : preFragment[j - 4]);
-                    this.Peer.BaseSocket.Client.SendTo(fragment, connection.Addres);
-                }
-                return;
+                this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
+                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Addres);
             }
-            
-            this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Addres);
+            else
+                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Addres); 
         }
 
         public void SendToAll()
         {
-            if (this.Peer.Configuration.Cryptor != null)
-                this.Buffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
-
-            if (this.m_memoryStream.Length > 512)
-            {
-                byte[] bufferFullFragment = this.m_memoryStream.ToArray();
-                
-                int fragment_count = (int)Math.Ceiling((double) bufferFullFragment.Length / 512);
-
-                for (int i = 0; i < fragment_count; i++)
-                {
-                    int offset = i * 512;
-                    byte[] preFragment = ((i +1 == fragment_count) ? bufferFullFragment.Skip(offset).ToArray() : bufferFullFragment.Skip(offset).Take(512).ToArray());
-                    byte[] fragment = new byte[preFragment.Length + 4];
-                    for (var j = 0; j < fragment.Length; j++)
-                        fragment[j] = ((j < 4) ? (byte)250 : preFragment[j - 4]);
-                    
-                    foreach (var connection in this.Peer.m_listconnections)
-                        this.Peer.BaseSocket.Client.SendTo(fragment, connection.Key);
-                }
-                return;
-            }
+            byte[] encryptedByffer = null;
 
             foreach (var connection in this.Peer.m_listconnections)
-                this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Key);
+            {
+                if (this.Peer.Configuration.Cryptor != null && connection.Value.IsEncryption)
+                {
+                    if (encryptedByffer == null)
+                    {
+                        encryptedByffer = this.Peer.Configuration.Cryptor.Encryption(this.Buffer);
+                    }
+                    this.Peer.BaseSocket.Client.SendTo(encryptedByffer, connection.Key);
+                } else
+                    this.Peer.BaseSocket.Client.SendTo(this.Buffer, connection.Key);
+            }
         }
 
         public void Byte(byte arg)
@@ -212,27 +174,6 @@ namespace SapphireNetwork
             this.UInt16((ushort)buffer.Length);
             this.m_memoryStream.Write(buffer, 0, buffer.Length);
             this.Position += buffer.Length;
-        }
-        
-        public void Vector2(Vector2 arg)
-        {
-            this.Float(arg.x);
-            this.Float(arg.y);
-        }
-
-        public void Vector3(Vector3 arg)
-        {
-            this.Float(arg.x);
-            this.Float(arg.y);
-            this.Float(arg.z);
-        }
-
-        public void Vector4(Vector4 arg)
-        {
-            this.Float(arg.x);
-            this.Float(arg.y);
-            this.Float(arg.z);
-            this.Float(arg.w);
         }
     }
 }

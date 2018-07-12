@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using UnityEngine;
 
 namespace SapphireNetwork
 {
@@ -137,30 +136,6 @@ namespace SapphireNetwork
                 return string.Empty;
             byte[] buffer = this.Bytes(length);
             return Encoding.ASCII.GetString(buffer);
-        }
-
-        public Vector2 Vector2()
-        {
-            float x = this.Float();
-            float y = this.Float();
-            return new Vector2(x, y);
-        }
-
-        public Vector3 Vector3()
-        {
-            float x = this.Float();
-            float y = this.Float();
-            float z = this.Float();
-            return new Vector3(x, y, z);
-        }
-
-        public Vector4 Vector4()
-        {
-            float x = this.Float();
-            float y = this.Float();
-            float z = this.Float();
-            float w = this.Float();
-            return new Vector4(x, y, z, w);
         }
     }
 }

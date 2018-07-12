@@ -26,9 +26,6 @@ namespace SapphireNetwork
         internal Dictionary<IPEndPoint,NetworkConnection> m_listconnections = new Dictionary<IPEndPoint,NetworkConnection>();
         internal Dictionary<NetworkConnection, string> m_listdisconnected = new Dictionary<NetworkConnection, string>();
         
-        internal Dictionary<IPEndPoint, MemoryStream> m_listfragmentsPerConnection = new Dictionary<IPEndPoint, MemoryStream>();
-        internal Queue<MemoryStream> m_listPoolMemoryStreams = new Queue<MemoryStream>();
-        
         public NetworkPeer(NetworkConfiguration configuration)
         {
             this.Configuration = configuration;
@@ -49,45 +46,17 @@ namespace SapphireNetwork
                     if (this.Status && this.BaseSocket != null)
                     {
                         buffer = this.BaseSocket.Receive(ref endpointLastsender);
-                        if (this.OnReceivingFragment(buffer, endpointLastsender))
-                            continue;
                         var packetObject = NetworkReceivedPacket.GetPoolObject(endpointLastsender, buffer);
-                        ListStackPackets.Enqueue(packetObject);
+                        lock (ListStackPackets)
+                        {
+                            ListStackPackets.Enqueue(packetObject);
+                        }
                     }
                     else
                         Thread.Sleep(10);
                 }
                 catch { }
             }
-        }
-
-        private bool OnReceivingFragment(byte[] buffer, IPEndPoint endpointLastsender)
-        {
-            if (buffer.Length > 4 && buffer[0] == 250 && buffer[1] == 250 && buffer[2] == 250 && buffer[3] == 250)
-            {
-                MemoryStream bufferStream;
-                if (this.m_listfragmentsPerConnection.TryGetValue(endpointLastsender, out bufferStream) == false)
-                {
-                    if (m_listPoolMemoryStreams.Count == 0)
-                        bufferStream = new MemoryStream();
-                    else
-                        bufferStream = m_listPoolMemoryStreams.Dequeue();
-                    this.m_listfragmentsPerConnection[endpointLastsender] = bufferStream;
-                }
-                bufferStream.Write(buffer, 4, buffer.Length - 4);
-                return true;
-            }
-
-            if (this.m_listfragmentsPerConnection.TryGetValue(endpointLastsender, out MemoryStream ms))
-            {
-                byte[] bufferEnd = ms.ToArray();
-                ListStackPackets.Enqueue(NetworkReceivedPacket.GetPoolObject(endpointLastsender, bufferEnd));
-                ms.SetLength(0);
-                m_listPoolMemoryStreams.Enqueue(ms);
-                this.m_listfragmentsPerConnection.Remove(endpointLastsender);
-            }
-            
-            return false;
         }
 
         internal void KickConnection(NetworkConnection connection, string reasone)
@@ -115,87 +84,92 @@ namespace SapphireNetwork
             if (this.Status)
             {
                 NetworkReceivedPacket packet = null;
-                while (this.ListStackPackets.Count != 0)
+                lock (this.ListStackPackets)
                 {
-                    packet = ListStackPackets.Dequeue();
-                    
-                    if (packet.Buffer != null && packet.Buffer.Length > 1)
-                    {
-                        switch (packet.Buffer[0])
-                        {
-                            case 255:
-                                if (packet.Buffer[1] == 255 && packet.Buffer.Length > 3 && packet.Buffer[2] == 255 && packet.Buffer[3] == 255)
-                                {
-                                    OnQueryRequest?.Invoke(packet.Addres, packet.Buffer);
-                                    NetworkReceivedPacket.SetPoolObject(packet);
-                                    continue;
-                                }
 
-                                break;
-                            case 254:
-                                if (packet.Buffer[1] == 254 && packet.Buffer.Length > 3 && packet.Buffer[2] == 254 && packet.Buffer[3] == 254)
-                                {
-                                    if (this.m_listconnections.TryGetValue(packet.Addres, out var connection))
+                    while (this.ListStackPackets.Count != 0)
+                    {
+                        packet = ListStackPackets.Dequeue();
+
+                        if (packet.Buffer != null && packet.Buffer.Length > 1)
+                        {
+                            switch (packet.Buffer[0])
+                            {
+                                case 255:
+                                    if (packet.Buffer[1] == 255 && packet.Buffer.Length > 3 && packet.Buffer[2] == 255 && packet.Buffer[3] == 255)
                                     {
-                                        string reasone = "Disconnected";
-                                        if (packet.Buffer.Length != 4)
+                                        OnQueryRequest?.Invoke(packet.Addres, packet.Buffer);
+                                        NetworkReceivedPacket.SetPoolObject(packet);
+                                        continue;
+                                    }
+
+                                    break;
+                                case 254:
+                                    if (packet.Buffer[1] == 254 && packet.Buffer.Length > 3 && packet.Buffer[2] == 254 && packet.Buffer[3] == 254)
+                                    {
+                                        if (this.m_listconnections.TryGetValue(packet.Addres, out var connection))
                                         {
-                                            byte[] reasoneBuffer = new byte[packet.Buffer.Length - 4];
-                                            for (int i = 4; i < packet.Buffer.Length; ++i)
-                                                reasoneBuffer[i - 4] = packet.Buffer[i];
-                                            reasone = Encoding.ASCII.GetString(reasoneBuffer);
+                                            string reasone = "Disconnected";
+                                            if (packet.Buffer.Length != 4)
+                                            {
+                                                byte[] reasoneBuffer = new byte[packet.Buffer.Length - 4];
+                                                for (int i = 4; i < packet.Buffer.Length; ++i)
+                                                    reasoneBuffer[i - 4] = packet.Buffer[i];
+                                                reasone = Encoding.ASCII.GetString(reasoneBuffer);
+                                            }
+
+                                            this.KickConnection(connection, reasone);
                                         }
 
-                                        this.KickConnection(connection, reasone);
+                                        NetworkReceivedPacket.SetPoolObject(packet);
+                                        continue;
                                     }
 
-                                    NetworkReceivedPacket.SetPoolObject(packet);
-                                    continue;
-                                }
-
-                                break;
-                            case 253:
-                                if (packet.Buffer[1] == 253 && packet.Buffer.Length > 4 && packet.Buffer[2] == 253 && packet.Buffer[3] == 253 && packet.Buffer[4] == this.Configuration.IndeficationByte)
-                                {
-                                    if (this.m_listconnections.TryGetValue(packet.Addres, out _) == false)
+                                    break;
+                                case 253:
+                                    if (packet.Buffer[1] == 253 && packet.Buffer.Length > 4 && packet.Buffer[2] == 253 && packet.Buffer[3] == 253 && packet.Buffer[4] == this.Configuration.IndeficationByte)
                                     {
-                                        if (this is NetworkServer)
-                                            this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, packet.Addres);
+                                        if (this.m_listconnections.TryGetValue(packet.Addres, out _) == false)
+                                        {
+                                            if (this is NetworkServer)
+                                                this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, packet.Addres);
 
-                                        this.m_listconnections[packet.Addres] = new NetworkConnection(this, packet.Addres);
-                                        OnConnected?.Invoke(this.m_listconnections[packet.Addres]);
+                                            this.m_listconnections[packet.Addres] = new NetworkConnection(this, packet.Addres);
+                                            OnConnected?.Invoke(this.m_listconnections[packet.Addres]);
+                                        }
+
+                                        NetworkReceivedPacket.SetPoolObject(packet);
+                                        continue;
                                     }
 
-                                    NetworkReceivedPacket.SetPoolObject(packet);
-                                    continue;
-                                }
-
-                                break;
-                            case 252:
-                                if (packet.Buffer[1] == 252 && packet.Buffer.Length > 3 && packet.Buffer[2] == 252 && packet.Buffer[3] == 252)
-                                {
-                                    if (this.m_listconnections.TryGetValue(packet.Addres, out var connection))
+                                    break;
+                                case 252:
+                                    if (packet.Buffer[1] == 252 && packet.Buffer.Length > 3 && packet.Buffer[2] == 252 && packet.Buffer[3] == 252)
                                     {
-                                        connection.OnUpdateResponseTime();
+                                        if (this.m_listconnections.TryGetValue(packet.Addres, out var connection))
+                                            connection.OnUpdateResponseTime();
+                                        NetworkReceivedPacket.SetPoolObject(packet);
+                                        continue;
                                     }
 
-                                    NetworkReceivedPacket.SetPoolObject(packet);
-                                    continue;
-                                }
+                                    break;
+                            }
 
-                                break;
+                            if (this.m_listconnections.TryGetValue(packet.Addres, out NetworkConnection connection_end) && this.m_listconnections[packet.Addres].IsConnected)
+                            {
+                                if (this.Configuration.Cryptor != null && connection_end.IsEncryption)
+                                    packet.Buffer = this.Configuration.Cryptor.Decryption(packet.Buffer);
+
+                                if (packet.Buffer[0] == this.Configuration.IndeficationByte)
+                                {
+                                    this.Read.Buffer = packet.Buffer;
+                                    OnMessage?.Invoke(connection_end);
+                                }
+                            }
                         }
 
-                        if (this.Configuration.Cryptor != null)
-                            packet.Buffer = this.Configuration.Cryptor.Decryption(packet.Buffer);
-
-                        if (packet.Buffer[0] == this.Configuration.IndeficationByte && this.m_listconnections.TryGetValue(packet.Addres, out NetworkConnection connection_end) && this.m_listconnections[packet.Addres].IsConnected)
-                        {
-                            this.Read.Buffer = packet.Buffer;
-                            OnMessage?.Invoke(connection_end);
-                        }
+                        NetworkReceivedPacket.SetPoolObject(packet);
                     }
-                    NetworkReceivedPacket.SetPoolObject(packet);
                 }
 
                 if (this.m_listconnections.Count != 0)
@@ -210,7 +184,7 @@ namespace SapphireNetwork
                         else if ((int) thisTime != (int) connection.Value.LastRequestTime)
                         {
                             this.BaseSocket.Client.SendTo(new byte[] {252, 252, 252, 252}, connection.Key);
-                            connection.Value.OnUpdateRequestTime();
+                            connection.Value.OnUpdateRequestTime(thisTime);
                         }
                     }
 
@@ -227,12 +201,9 @@ namespace SapphireNetwork
                                 disconnectBytes.AddRange(Encoding.ASCII.GetBytes(connection.Value));
                                 
                                 this.BaseSocket.Client.SendTo(disconnectBytes.ToArray(), connection.Key.Addres);
-
-                                if (this.m_listfragmentsPerConnection.TryGetValue(connection.Key.Addres, out var ms))
-                                {
-                                    ms.Dispose();
-                                    this.m_listfragmentsPerConnection.Remove(connection.Key.Addres);
-                                }
+                                
+                                if (this is NetworkClient)
+                                    this.Status = false;
                                 
                                 OnDisconnected?.Invoke(connection.Key, connection.Value);
                             }

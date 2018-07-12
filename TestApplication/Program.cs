@@ -15,6 +15,62 @@ using SapphireNetwork;
 
 namespace TestApplication
 {
+    public class Crypto : INetworkCryptor
+    {
+        private byte[] BufferKey = new byte[] { 0xB1, 0x2B, 0xF1 }; 
+        
+        public byte[] Encryption(byte[] buffer)
+        {
+            return RC4.Encrypt(this.BufferKey, buffer);
+        }
+
+        public byte[] Decryption(byte[] buffer)
+        {
+            return  RC4.Decrypt(this.BufferKey, buffer);
+        }
+        
+        public class RC4 {
+
+            public static byte[] Encrypt(byte[] pwd, byte[] data) {
+                int a, i, j, k, tmp;
+                int[] key, box;
+                byte[] cipher;
+
+                key = new int[256];
+                box = new int[256];
+                cipher = new byte[data.Length];
+
+                for (i = 0; i < 256; i++) {
+                    key[i] = pwd[i % pwd.Length];
+                    box[i] = i;
+                }
+                for (j = i = 0; i < 256; i++) {
+                    j = (j + box[i] + key[i]) % 256;
+                    tmp = box[i];
+                    box[i] = box[j];
+                    box[j] = tmp;
+                }
+                for (a = j = i = 0; i < data.Length; i++) {
+                    a++;
+                    a %= 256;
+                    j += box[a];
+                    j %= 256;
+                    tmp = box[a];
+                    box[a] = box[j];
+                    box[j] = tmp;
+                    k = box[((box[a] + box[j]) % 256)];
+                    cipher[i] = (byte)(data[i] ^ k);
+                }
+                return cipher;
+            }
+
+            public static byte[] Decrypt(byte[] pwd, byte[] data) {
+                return Encrypt(pwd, data);
+            }
+
+        }
+    }
+    
     internal class Program : SapphireType
     {
         public static void Main() => Framework.Initialization<Program>(true);
@@ -24,10 +80,11 @@ namespace TestApplication
         
         public override void OnAwake()
         {
-            ConsoleSystem.ShowCallerInLog = true;
-            BaseServer = new NetworkServer(new NetworkConfiguration(0x00) { ServerPort = 10015 });
+            ConsoleSystem.ShowCallerInLog = false;
+            BaseServer = new NetworkServer(new NetworkConfiguration(0x00) { ServerPort = 10015, Cryptor = new Crypto()});
             BaseServer.OnConnected = connection =>
             {
+                connection.IsEncryption = true;
                 ConsoleSystem.Log("BaseServer.OnConnected");
             };
             BaseServer.OnDisconnected = (connection, s) =>
@@ -36,63 +93,41 @@ namespace TestApplication
             };
             BaseServer.OnMessage = connection =>
             {
-                ConsoleSystem.Log("BaseServer.OnMessage");
-                int len = connection.Peer.Read.Int32();
-                byte[] buffer = connection.Peer.Read.Bytes(len);
+                ConsoleSystem.Log("BaseServer.OnMessage => " + connection.Peer.Read.String());
                 
-                connection.Peer.Write.Start();
-                connection.Peer.Write.Int32((int)len);
-                connection.Peer.Write.Bytes(buffer);
-                connection.Peer.Write.SendTo(connection);
+//                connection.Peer.Write.Start();
+//                connection.Peer.Write.String("Hello");
+//                connection.Peer.Write.SendTo(connection);
             };
             BaseServer.Start();
             
-            BaseClient = new NetworkClient(new NetworkConfiguration(0x00));
-            BaseClient.OnConnected = connection =>
-            {
-                ConsoleSystem.Log("BaseClient.OnConnected");
-                
-                Graphics graph = null;
-                var bmp = new Bitmap(1920, 1080);
-                graph = Graphics.FromImage(bmp);
-                graph.CopyFromScreen(0, 0, 0, 0, bmp.Size);
-                MemoryStream ms = new MemoryStream();
-                bmp.Save(ms, ImageFormat.Jpeg);
-                
-                
-                connection.Peer.Write.Start();
-                connection.Peer.Write.Int32((int)ms.Length);
-                connection.Peer.Write.Bytes(ms.ToArray());
-                connection.Peer.Write.SendTo(connection);
-            };
-            BaseClient.OnDisconnected = (connection, s) =>
-            {
-                ConsoleSystem.Log("BaseClient.OnDisconnected: " + s);
-            };
-            BaseClient.OnMessage = connection =>
-            {
-                ConsoleSystem.Log("BaseServer.OnMessage: " + connection.Peer.Read.Length);
-            };
-            this.BaseClient.Connect("127.0.0.1", 10015);
+            BaseClient = new NetworkClient(new NetworkConfiguration(0x00){Cryptor = new Crypto()});
+//            BaseClient.OnConnected = connection =>
+//            {
+//                connection.IsEncryption = true;
+//                ConsoleSystem.Log("BaseClient.OnConnected");
+//                
+//                connection.Peer.Write.Start();
+//                connection.Peer.Write.String("Hello");
+//                connection.Peer.Write.SendTo(connection);
+//            };
+//            BaseClient.OnDisconnected = (connection, s) =>
+//            {
+//                ConsoleSystem.Log("BaseClient.OnDisconnected: " + s);
+//            };
+//            BaseClient.OnMessage = connection =>
+//            {
+//                ConsoleSystem.Log("BaseServer.OnMessage => " + connection.Peer.Read.String());
+//            };
+//            this.BaseClient.Connect("127.0.0.1", 10015);
+//
+//
+//            SapphireEngine.Functions.Timer.SetTimeout(() =>
+//            {
+//                SapphireEngine.Functions.Timer.SetTimeout(() => { SapphireEngine.Functions.Timer.SetTimeout(() => { }, 10);}, 10);
+//                
+//            }, 10);
 
-
-            SapphireEngine.Functions.Timer.SetTimeout(() =>
-            {
-                SapphireEngine.Functions.Timer.SetTimeout(() => { SapphireEngine.Functions.Timer.SetTimeout(() => { }, 10);}, 10);
-                
-            }, 10);
-
-        }
-        
-        public void PrintByteArray(byte[] bytes)
-        {
-            var sb = new StringBuilder("new byte[] { ");
-            foreach (var b in bytes)
-            {
-                sb.Append(b + ", ");
-            }
-            sb.Append("}");
-            Console.WriteLine(sb.ToString());
         }
 
         public override void OnUpdate()

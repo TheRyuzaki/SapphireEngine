@@ -8,9 +8,10 @@ namespace SapphireNetwork
         public IPEndPoint Addres { get; internal set; }
         public object ConnectionProfile = null;
         
-        public bool IsConnected { get; internal set; } = false;
-        public int LastRequestTime { get; private set; }
-        public int LastResponseTime { get; private set; }
+        public Boolean IsConnected { get; internal set; } = false;
+        public Boolean IsEncryption { get; set; } = false;
+        public Int32 LastRequestTime { get; private set; }
+        public Int32 LastResponseTime { get; private set; }
         public NetworkPeer Peer { get; internal set; }
 
         public NetworkConnection(NetworkPeer peer, IPEndPoint addres)
@@ -23,7 +24,14 @@ namespace SapphireNetwork
 
         public void Disconnect(string reasone) => this.Peer.KickConnection(this, reasone);
 
-        internal void OnUpdateRequestTime() => this.LastRequestTime = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-        internal void OnUpdateResponseTime() => this.LastResponseTime = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        internal void OnUpdateRequestTime(int unixtime = 0)
+        {
+            this.LastRequestTime = ((unixtime != 0) ? unixtime : (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+        }
+
+        internal void OnUpdateResponseTime()
+        {
+            this.LastResponseTime = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        }
     }
 }

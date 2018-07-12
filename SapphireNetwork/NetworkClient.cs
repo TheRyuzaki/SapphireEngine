@@ -50,17 +50,15 @@ namespace SapphireNetwork
             base.Cycle();
             if (this.Status == true && this.m_listconnections.Count == 0)
             {
-                if ((Int32) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds == this.m_startConnectionTime + this.m_countFailedTick)
+                if ((Int32) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds == this.m_startConnectionTime + 3 + this.m_countFailedTick)
                 {
-                    if (this.m_countFailedTick < this.Configuration.TimeOut)
+                    if (this.m_countFailedTick < this.Configuration.TimeOut - 3)
                     {
                         this.m_countFailedTick++;
                         this.BaseSocket.Client.SendTo(new byte[] {253, 253, 253, 253, this.Configuration.IndeficationByte}, this.ConnectedEndPoint);
                     }
                     else
-                    {
                         this.Disconnect("Time Out!");
-                    }
                 }
             }
         }
@@ -77,6 +75,8 @@ namespace SapphireNetwork
                 if (this.IsConnected)
                     this.BaseSocket?.Client.SendTo(new byte[] { 254, 254, 254, 254}, this.ConnectedEndPoint);
                 var connection = this.Connection;
+                if (connection != null)
+                    this.Connection.IsConnected = false;
                 this.Status = false;
                 this.BaseSocket?.Close();
                 this.BaseSocket = null;
